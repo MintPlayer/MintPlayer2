@@ -125,7 +125,7 @@ namespace MintPlayer.Data.Repositories
 					Born = person.Born,
 					Died = person.Died,
 
-					//Artists = person.Artists.Select(ap => ArtistRepository.ToDto(ap.Artist)).ToList()
+					Artists = person.Artists.Select(ap => ArtistRepository.ToDto(ap.Artist)).ToList()
 				};
 			}
 			else

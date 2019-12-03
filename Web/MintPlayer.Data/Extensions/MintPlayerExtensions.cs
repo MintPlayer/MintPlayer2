@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using MintPlayer.Data.Helpers;
 using MintPlayer.Data.Options;
 using MintPlayer.Data.Repositories;
 using MintPlayer.Data.Repositories.Interfaces;
@@ -61,7 +62,12 @@ namespace MintPlayer.Data.Extensions
 			services
 				.AddScoped<IAccountRepository, AccountRepository>()
 				.AddScoped<IRoleRepository, RoleRepository>()
-				.AddScoped<IPersonRepository, PersonRepository>();
+				.AddScoped<IPersonRepository, PersonRepository>()
+				.AddScoped<IArtistRepository, ArtistRepository>()
+				.AddScoped<ISongRepository, SongRepository>()
+				.AddScoped<ISubjectRepository, SubjectRepository>()
+				.AddTransient<ArtistHelper>()
+				.AddTransient<SongHelper>();
 
 			services
 				.Configure<JwtIssuerOptions>(jwt_options =>
