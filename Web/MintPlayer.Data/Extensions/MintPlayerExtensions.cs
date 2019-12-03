@@ -60,7 +60,8 @@ namespace MintPlayer.Data.Extensions
 
 			services
 				.AddScoped<IAccountRepository, AccountRepository>()
-				.AddScoped<IRoleRepository, RoleRepository>();
+				.AddScoped<IRoleRepository, RoleRepository>()
+				.AddScoped<IPersonRepository, PersonRepository>();
 
 			services
 				.Configure<JwtIssuerOptions>(jwt_options =>
