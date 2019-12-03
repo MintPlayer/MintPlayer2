@@ -7,11 +7,13 @@ namespace MintPlayer.Data
 {
 	internal class MintPlayerContext : IdentityDbContext<User, Role, Guid>
 	{
+		internal DbSet<Subject> Subjects { get; set; }
 		internal DbSet<Person> People { get; set; }
 		internal DbSet<Artist> Artists { get; set; }
 		internal DbSet<Song> Songs { get; set; }
 		internal DbSet<Like> Likes { get; set; }
 		internal DbSet<MediumType> MediumTypes { get; set; }
+		internal DbSet<Medium> Media { get; set; }
 
 		public MintPlayerContext() : base()
 		{
