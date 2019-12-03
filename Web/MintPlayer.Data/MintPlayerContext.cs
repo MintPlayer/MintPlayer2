@@ -11,6 +11,7 @@ namespace MintPlayer.Data
 		internal DbSet<Artist> Artists { get; set; }
 		internal DbSet<Song> Songs { get; set; }
 		internal DbSet<Like> Likes { get; set; }
+		internal DbSet<MediumType> MediumTypes { get; set; }
 
 		public MintPlayerContext() : base()
 		{
@@ -59,6 +60,9 @@ namespace MintPlayer.Data
 			modelBuilder.Entity<Like>().HasKey(like => new { like.SubjectId, like.UserId });
 			modelBuilder.Entity<Like>().HasOne(like => like.Subject).WithMany(s => s.Likes).HasForeignKey(su => su.SubjectId).OnDelete(DeleteBehavior.Restrict);
 			modelBuilder.Entity<Like>().HasOne(like => like.User).WithMany(u => u.Likes).HasForeignKey(su => su.UserId).OnDelete(DeleteBehavior.Restrict);
+
+			// Medium types
+			modelBuilder.Entity<MediumType>().HasQueryFilter(mt => mt.UserDelete == null);
 		}
 	}
 }
