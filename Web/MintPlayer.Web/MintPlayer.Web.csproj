@@ -28,6 +28,8 @@
 
   <ItemGroup>
     <None Remove=".gitignore" />
+    <None Remove="ClientApp\src\app\enums\eSidebarState.ts" />
+    <None Remove="ClientApp\src\app\enums\eToggleButtonState.ts" />
     <None Remove="ClientApp\tsconfig.app.json" />
     <None Remove="ClientApp\tsconfig.json" />
     <None Remove="ClientApp\tsconfig.server.json" />
@@ -43,6 +45,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MintPlayer.Data\MintPlayer.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\enums\eSidebarState.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\enums\eToggleButtonState.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
