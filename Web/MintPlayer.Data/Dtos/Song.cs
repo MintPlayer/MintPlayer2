@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Nest;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace MintPlayer.Data.Dtos
@@ -12,5 +14,8 @@ namespace MintPlayer.Data.Dtos
         public string Text => Title;
 
         public List<Artist> Artists { get; set; }
+
+        [JsonIgnore]
+        public CompletionField TitleSuggest => new CompletionField { Input = new[] { Title } };
     }
 }

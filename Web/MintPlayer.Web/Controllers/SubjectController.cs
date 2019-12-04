@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using MintPlayer.Data.Repositories.Interfaces;
 using MintPlayer.Web.ViewModels.Subject;
+using System.Collections.Generic;
+using MintPlayer.Data.Dtos;
+using System.Linq;
 
 namespace MintPlayer.Web.Controllers
 {
@@ -56,6 +59,52 @@ namespace MintPlayer.Web.Controllers
 				Dislikes = likes.Item2,
 				Like = doeslike,
 				Authenticated = true
+			};
+		}
+
+		[HttpGet("search/suggest/{subjects_concat}/{search_term}")]
+		public async Task<IEnumerable<Subject>> Suggest([FromRoute]string subjects_concat, [FromRoute]string search_term)
+		{
+			// Still to do:
+			// https://devadventures.net/2018/05/03/implementing-autocomplete-and-more-like-this-using-asp-net-core-elasticsearch-and-nest-5-x-part-4-4/
+
+			var subjects = subjects_concat.Split('-');
+			var valid_subjects = new[] { "artist", "person", "song" };
+
+			if (subjects.FirstOrDefault() == null)
+				subjects = valid_subjects;
+			else if (subjects.FirstOrDefault() == "all")
+				subjects = valid_subjects;
+			else if (!subjects.Intersect(valid_subjects).Any())
+				subjects = valid_subjects;
+			else
+				subjects = subjects.Intersect(valid_subjects).ToArray();
+
+			var results = await subjectRepository.Suggest(subjects, search_term);
+			return results.ToList();
+		}
+
+		[HttpGet("search/{subjects_concat}/{search_term}")]
+		public async Task<SearchResultsVM> Search([FromRoute]string subjects_concat, [FromRoute]string search_term)
+		{
+			var subjects = subjects_concat.Split('-');
+			var valid_subjects = new[] { "artist", "person", "song" };
+
+			if (subjects.FirstOrDefault() == null)
+				subjects = valid_subjects;
+			else if (subjects.FirstOrDefault() == "all")
+				subjects = valid_subjects;
+			else if (!subjects.Intersect(valid_subjects).Any())
+				subjects = valid_subjects;
+			else
+				subjects = subjects.Intersect(valid_subjects).ToArray();
+
+			var results = await subjectRepository.Search(subjects, search_term);
+			return new SearchResultsVM
+			{
+				Artists = results.Where(s => s.GetType() == typeof(Artist)).Cast<Artist>().ToList(),
+				People = results.Where(s => s.GetType() == typeof(Person)).Cast<Person>().ToList(),
+				Songs = results.Where(s => s.GetType() == typeof(Song)).Cast<Song>().ToList()
 			};
 		}
 	}

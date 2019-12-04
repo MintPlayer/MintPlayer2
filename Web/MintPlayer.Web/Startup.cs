@@ -35,12 +35,18 @@ namespace MintPlayer.Web
                 };
             });
 
+            services.AddElasticSearch(options => {
+                options.Url = Configuration["elasticsearch:url"];
+                options.DefaultIndex = Configuration["elasticsearch:index"];
+            });
+
             services
                 .AddControllersWithViews()
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
-                });
+                })
+                .AddNewtonsoftJson();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
