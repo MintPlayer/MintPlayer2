@@ -28,7 +28,9 @@
 
   <ItemGroup>
     <None Remove=".gitignore" />
+    <None Remove="ClientApp\src\app\enums\ePlayerType.ts" />
     <None Remove="ClientApp\src\app\enums\eSidebarState.ts" />
+    <None Remove="ClientApp\src\app\enums\eSubjectType.ts" />
     <None Remove="ClientApp\src\app\enums\eToggleButtonState.ts" />
     <None Remove="ClientApp\src\app\interfaces\account\user-data.ts" />
     <None Remove="ClientApp\src\app\interfaces\account\user.ts" />
@@ -52,7 +54,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\enums\ePlayerType.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\enums\eSidebarState.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\enums\eSubjectType.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\enums\eToggleButtonState.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\account\user-data.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\account\user.ts" />
