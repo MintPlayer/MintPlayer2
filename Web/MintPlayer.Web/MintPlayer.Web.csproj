@@ -30,6 +30,7 @@
     <None Remove=".gitignore" />
     <None Remove="ClientApp\src\app\enums\eSidebarState.ts" />
     <None Remove="ClientApp\src\app\enums\eToggleButtonState.ts" />
+    <None Remove="ClientApp\src\styles\animations\slide-up-down.animation.ts" />
     <None Remove="ClientApp\tsconfig.app.json" />
     <None Remove="ClientApp\tsconfig.json" />
     <None Remove="ClientApp\tsconfig.server.json" />
@@ -50,6 +51,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\enums\eSidebarState.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\enums\eToggleButtonState.ts" />
+    <TypeScriptCompile Include="ClientApp\src\styles\animations\slide-up-down.animation.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
