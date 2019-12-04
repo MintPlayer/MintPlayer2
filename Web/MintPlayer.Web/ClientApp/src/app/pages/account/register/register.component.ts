@@ -17,12 +17,12 @@ export class RegisterComponent implements OnInit {
   public data: UserData = {
     user: {
       id: null,
-      userName: 'PieterjanDC',
-      email: 'pieterjandeclippel@msn.com',
+      userName: '',
+      email: '',
       pictureUrl: ''
     },
-    password: 'Aze123@!',
-    passwordConfirmation: 'Aze123@!'
+    password: '',
+    passwordConfirmation: ''
   };
 
   public errorDescription: string = '';

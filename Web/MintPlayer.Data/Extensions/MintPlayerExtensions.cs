@@ -28,12 +28,7 @@ namespace MintPlayer.Data.Extensions
 				.AddDefaultTokenProviders();
 
 			services
-				.AddAuthentication(auth_options =>
-				{
-					auth_options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-					auth_options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-					auth_options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-				})
+				.AddAuthentication()
 				.AddJwtBearer(jwt_options =>
 				{
 					jwt_options.Audience = opt.JwtIssuerOptions.Audience;

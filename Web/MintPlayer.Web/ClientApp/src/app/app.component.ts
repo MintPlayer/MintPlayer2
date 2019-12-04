@@ -54,7 +54,6 @@ export class AppComponent {
   logoutClicked() {
     this.accountService.logout().subscribe(() => {
       this.activeUser = null;
-      localStorage.removeItem('auth_token');
     });
   }
 

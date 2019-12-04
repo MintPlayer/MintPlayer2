@@ -12,15 +12,7 @@ export class AccountService {
   }
 
   public register(data: UserData) {
-    return this.httpClient.post(`${this.baseUrl}/web/Account/register`, {
-      user: {
-        userName: data.user.userName,
-        email: data.user.email,
-        pictureUrl: data.user.pictureUrl
-      },
-      password: data.password,
-      passwordConfirmation: data.passwordConfirmation
-    });
+    return this.httpClient.post(`${this.baseUrl}/web/Account/register`, data);
   }
   public login(email: string, password: string) {
     return this.httpClient.post<LoginResult>(`${this.baseUrl}/web/account/login`, { email, password });
@@ -29,6 +21,6 @@ export class AccountService {
     return this.httpClient.get<User>(`${this.baseUrl}/web/account/current-user`);
   }
   public logout() {
-    return this.httpClient.post(`${this.baseUrl}/api/account/logout`, {});
+    return this.httpClient.post(`${this.baseUrl}/web/account/logout`, {});
   }
 }
