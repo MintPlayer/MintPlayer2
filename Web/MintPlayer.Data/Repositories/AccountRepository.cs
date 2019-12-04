@@ -53,7 +53,7 @@ namespace MintPlayer.Data.Repositories
 			}
 		}
 
-		public async Task<LoginResult> LocalLogin(string email, string password, bool remember)
+		public async Task<LoginResult> LocalLogin(string email, string password, bool createCookie)
 		{
 			try
 			{
@@ -64,13 +64,26 @@ namespace MintPlayer.Data.Repositories
 				var result = await signin_manager.CheckPasswordSignInAsync(user, password, false);
 				if (result.Succeeded)
 				{
-					return new LoginResult
+					if (createCookie)
 					{
-						Status = true,
-						Platform = "local",
-						User = ToDto(user),
-						Token = CreateToken(user)
-					};
+						await signin_manager.SignInAsync(user, true);
+						return new LoginResult
+						{
+							Status = true,
+							Platform = "local",
+							User = ToDto(user)
+						};
+					}
+					else
+					{
+						return new LoginResult
+						{
+							Status = true,
+							Platform = "local",
+							User = ToDto(user),
+							Token = CreateToken(user)
+						};
+					}
 				}
 				else
 				{
@@ -91,6 +104,11 @@ namespace MintPlayer.Data.Repositories
 		{
 			var user = await user_manager.GetUserAsync(userProperty);
 			return ToDto(user);
+		}
+
+		public async Task Logout()
+		{
+			await signin_manager.SignOutAsync();
 		}
 
 		#region Helper methods

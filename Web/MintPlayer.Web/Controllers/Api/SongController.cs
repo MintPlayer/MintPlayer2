@@ -8,7 +8,7 @@ using MintPlayer.Data.Dtos;
 using MintPlayer.Data.Repositories.Interfaces;
 using MintPlayer.Web.ViewModels.Song;
 
-namespace MintPlayer.Web.Controllers
+namespace MintPlayer.Web.Controllers.Api
 {
 	[Route("api/[controller]")]
 	public class SongController : Controller
@@ -37,7 +37,7 @@ namespace MintPlayer.Web.Controllers
 		}
 		// POST: api/Song
 		[HttpPost]
-		[Authorize]
+		[Authorize(AuthenticationSchemes = "Bearer")]
 		public async Task<Song> Post([FromBody] SongCreateVM songCreateVM)
 		{
 			var song = await songRepository.InsertSong(songCreateVM.Song);
@@ -46,7 +46,7 @@ namespace MintPlayer.Web.Controllers
 		}
 		// PUT: api/Song/5
 		[HttpPut("{id}")]
-		[Authorize]
+		[Authorize(AuthenticationSchemes = "Bearer")]
 		public async Task Put(int id, [FromBody] SongUpdateVM songUpdateVM)
 		{
 			await songRepository.UpdateSong(songUpdateVM.Song);
@@ -55,7 +55,7 @@ namespace MintPlayer.Web.Controllers
 		}
 		// DELETE: api/ApiWithActions/5
 		[HttpDelete("{id}")]
-		[Authorize]
+		[Authorize(AuthenticationSchemes = "Bearer")]
 		public async Task Delete(int id)
 		{
 			await songRepository.DeleteSong(id);

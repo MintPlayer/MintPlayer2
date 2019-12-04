@@ -9,9 +9,9 @@ using MintPlayer.Data.Exceptions.Account;
 using MintPlayer.Data.Repositories.Interfaces;
 using MintPlayer.Web.ViewModels.Account;
 
-namespace MintPlayer.Web.Controllers
+namespace MintPlayer.Web.Controllers.Web
 {
-	[Route("api/[controller]")]
+	[Route("web/[controller]")]
 	public class AccountController : Controller
 	{
 		private IAccountRepository accountRepository;
@@ -64,6 +64,14 @@ namespace MintPlayer.Web.Controllers
 		{
 			var user = await accountRepository.GetCurrentUser(User);
 			return user;
+		}
+
+		[Authorize]
+		[HttpPost("logout")]
+		public async Task<IActionResult> Logoout()
+		{
+			await accountRepository.Logout();
+			return Ok();
 		}
 	}
 }

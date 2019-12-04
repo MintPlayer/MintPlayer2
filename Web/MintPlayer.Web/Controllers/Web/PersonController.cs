@@ -7,9 +7,9 @@ using MintPlayer.Data.Dtos;
 using MintPlayer.Web.ViewModels.Person;
 using MintPlayer.Data.Repositories.Interfaces;
 
-namespace MintPlayer.Web.Controllers
+namespace MintPlayer.Web.Controllers.Web
 {
-	[Route("api/[controller]")]
+	[Route("web/[controller]")]
 	[ApiController]
 	public class PersonController : Controller
 	{

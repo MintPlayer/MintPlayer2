@@ -8,7 +8,7 @@ using MintPlayer.Data.Dtos;
 using MintPlayer.Data.Repositories.Interfaces;
 using MintPlayer.Web.ViewModels.Artist;
 
-namespace MintPlayer.Web.Controllers
+namespace MintPlayer.Web.Controllers.Api
 {
 	[Route("api/[controller]")]
 	[ApiController]
@@ -40,7 +40,7 @@ namespace MintPlayer.Web.Controllers
 
 		// POST: api/Artist
 		[HttpPost]
-		[Authorize]
+		[Authorize(AuthenticationSchemes = "Bearer")]
 		public async Task<Artist> Post([FromBody] ArtistCreateVM artistCreateVM)
 		{
 			var artist = await artistRepository.InsertArtist(artistCreateVM.Artist);
@@ -50,7 +50,7 @@ namespace MintPlayer.Web.Controllers
 
 		// PUT: api/Artist/5
 		[HttpPut("{id}")]
-		[Authorize]
+		[Authorize(AuthenticationSchemes = "Bearer")]
 		public async Task Put(int id, [FromBody] ArtistUpdateVM artistUpdateVM)
 		{
 			await artistRepository.UpdateArtist(artistUpdateVM.Artist);
@@ -60,7 +60,7 @@ namespace MintPlayer.Web.Controllers
 
 		// DELETE: api/ApiWithActions/5
 		[HttpDelete("{id}")]
-		[Authorize]
+		[Authorize(AuthenticationSchemes = "Bearer")]
 		public async Task Delete(int id)
 		{
 			await artistRepository.DeleteArtist(id);

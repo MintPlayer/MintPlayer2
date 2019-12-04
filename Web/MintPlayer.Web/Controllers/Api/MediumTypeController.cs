@@ -8,7 +8,7 @@ using MintPlayer.Data.Dtos;
 using MintPlayer.Data.Repositories.Interfaces;
 using MintPlayer.Web.ViewModels.MediumType;
 
-namespace MintPlayer.Web.Controllers
+namespace MintPlayer.Web.Controllers.Api
 {
 	[Route("api/[controller]")]
 	[ApiController]
@@ -38,7 +38,7 @@ namespace MintPlayer.Web.Controllers
 
 		// POST: api/MediumType
 		[HttpPost]
-		[Authorize]
+		[Authorize(AuthenticationSchemes = "Bearer")]
 		public async Task<MediumType> Post([FromBody]MediumTypeCreateVM mediumTypeCreateVM)
 		{
 			var medium_type = await mediumTypeRepository.InsertMediumType(mediumTypeCreateVM.MediumType);
@@ -47,7 +47,7 @@ namespace MintPlayer.Web.Controllers
 
 		// PUT: api/MediumType/5
 		[HttpPut("{id}")]
-		[Authorize]
+		[Authorize(AuthenticationSchemes = "Bearer")]
 		public async Task Put(int id, [FromBody]MediumTypeUpdateVM mediumTypeUpdateVM)
 		{
 			await mediumTypeRepository.UpdateMediumType(mediumTypeUpdateVM.MediumType);
@@ -56,7 +56,7 @@ namespace MintPlayer.Web.Controllers
 
 		// DELETE: api/MediumType/5
 		[HttpDelete("{id}")]
-		[Authorize]
+		[Authorize(AuthenticationSchemes = "Bearer")]
 		public async Task Delete(int id)
 		{
 			await mediumTypeRepository.DeleteMediumType(id);

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using MintPlayer.Data.Dtos;
 using System.Linq;
 
-namespace MintPlayer.Web.Controllers
+namespace MintPlayer.Web.Controllers.Api
 {
 	[ApiController]
 	[Route("api/[controller]")]
@@ -45,7 +45,7 @@ namespace MintPlayer.Web.Controllers
 			};
 		}
 
-		[Authorize]
+		[Authorize(AuthenticationSchemes = "Bearer")]
 		[HttpPost("{subject_id}/likes")]
 		public async Task<SubjectLikeVM> Like([FromRoute]int subject_id, [FromBody]bool like)
 		{

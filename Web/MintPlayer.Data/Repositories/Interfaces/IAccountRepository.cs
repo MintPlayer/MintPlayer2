@@ -8,7 +8,8 @@ namespace MintPlayer.Data.Repositories.Interfaces
     public interface IAccountRepository
     {
         Task<Tuple<User, string>> Register(User user, string password);
-        Task<LoginResult> LocalLogin(string email, string password, bool remember);
+        Task<LoginResult> LocalLogin(string email, string password, bool createCookie);
         Task<User> GetCurrentUser(ClaimsPrincipal userProperty);
+        Task Logout();
     }
 }
