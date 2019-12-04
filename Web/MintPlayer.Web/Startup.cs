@@ -86,6 +86,13 @@ namespace MintPlayer.Web
                     options.Audience = Configuration["JwtIssuerOptions:Audience"];
                     options.ValidFor = Configuration.GetValue<TimeSpan>("JwtIssuerOptions:ValidFor");
                     options.Key = Configuration["JwtIssuerOptions:Key"];
+                })
+                .ConfigureApplicationCookie(options =>
+                {
+                    options.Events.OnRedirectToLogin = async (context) =>
+                    {
+                        context.Response.StatusCode = 401;
+                    };
                 });
         }
 
