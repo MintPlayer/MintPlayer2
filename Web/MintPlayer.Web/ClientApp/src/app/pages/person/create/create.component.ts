@@ -1,13 +1,37 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { Person } from '../../../interfaces/person';
+import { PersonService } from '../../../services/person/person.service';
+import { MediumTypeService } from '../../../services/medium-type/medium-type.service';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.scss']
 })
-export class CreateComponent implements OnInit {
+export class PersonCreateComponent implements OnInit {
 
-  constructor() { }
+  constructor(private personService: PersonService, private mediumTypeService: MediumTypeService, private router: Router, private titleService: Title) {
+    this.titleService.setTitle('Create person');
+  }
+
+  public person: Person = {
+    id: 0,
+    firstName: "",
+    lastName: "",
+    born: null,
+    died: null,
+    artists: [],
+    media: [],
+    text: ""
+  };
+
+  public savePerson() {
+    this.personService.createPerson(this.person).subscribe((person) => {
+      this.router.navigate(["person", person.id]);
+    });
+  }
 
   ngOnInit() {
   }

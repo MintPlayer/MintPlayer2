@@ -10,7 +10,7 @@ export class SongService {
   }
 
   public getSongs(include_relations: boolean, count: number = 20, page: number = 1) {
-    return this.httpClient.get<Song[]>(`${this.baseUrl}/api/song`, {
+    return this.httpClient.get<Song[]>(`${this.baseUrl}/web/song`, {
       headers: {
         'include_relations': String(include_relations),
         'count': String(count),
@@ -20,7 +20,7 @@ export class SongService {
   }
 
   public getSong(id: number, include_relations: boolean) {
-    return this.httpClient.get<Song>(`${this.baseUrl}/api/song/${id}`, {
+    return this.httpClient.get<Song>(`${this.baseUrl}/web/song/${id}`, {
       headers: {
         'include_relations': String(include_relations)
       }
@@ -28,14 +28,14 @@ export class SongService {
   }
 
   public createSong(song: Song) {
-    return this.httpClient.post<Song>(`${this.baseUrl}/api/song`, { song });
+    return this.httpClient.post<Song>(`${this.baseUrl}/web/song`, { song });
   }
 
   public updateSong(song: Song) {
-    return this.httpClient.put(`${this.baseUrl}/api/song/${song.id}`, { song });
+    return this.httpClient.put(`${this.baseUrl}/web/song/${song.id}`, { song });
   }
 
   public deleteSong(song: Song) {
-    return this.httpClient.delete(`${this.baseUrl}/api/song/${song.id}`);
+    return this.httpClient.delete(`${this.baseUrl}/web/song/${song.id}`);
   }
 }

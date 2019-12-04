@@ -2,14 +2,19 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { SongRoutingModule } from './song-routing.module';
-import { ListComponent } from './list/list.component';
-import { CreateComponent } from './create/create.component';
-import { EditComponent } from './edit/edit.component';
-import { ShowComponent } from './show/show.component';
+import { SongListComponent } from './list/list.component';
+import { SongCreateComponent } from './create/create.component';
+import { SongEditComponent } from './edit/edit.component';
+import { SongShowComponent } from './show/show.component';
 
 
 @NgModule({
-  declarations: [ListComponent, CreateComponent, EditComponent, ShowComponent],
+  declarations: [
+    SongListComponent,
+    SongCreateComponent,
+    SongEditComponent,
+    SongShowComponent
+  ],
   imports: [
     CommonModule,
     SongRoutingModule

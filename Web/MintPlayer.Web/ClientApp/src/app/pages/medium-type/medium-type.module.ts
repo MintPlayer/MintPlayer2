@@ -2,14 +2,19 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MediumTypeRoutingModule } from './medium-type-routing.module';
-import { ListComponent } from './list/list.component';
-import { CreateComponent } from './create/create.component';
-import { EditComponent } from './edit/edit.component';
-import { ShowComponent } from './show/show.component';
+import { MediumTypeListComponent } from './list/list.component';
+import { MediumTypeCreateComponent } from './create/create.component';
+import { MediumTypeEditComponent } from './edit/edit.component';
+import { MediumTypeShowComponent } from './show/show.component';
 
 
 @NgModule({
-  declarations: [ListComponent, CreateComponent, EditComponent, ShowComponent],
+  declarations: [
+    MediumTypeListComponent,
+    MediumTypeCreateComponent,
+    MediumTypeEditComponent,
+    MediumTypeShowComponent
+  ],
   imports: [
     CommonModule,
     MediumTypeRoutingModule

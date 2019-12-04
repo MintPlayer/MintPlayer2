@@ -10,7 +10,7 @@ export class MediumTypeService {
   }
 
   public getMediumTypes(include_relations: boolean) {
-    return this.httpClient.get<MediumType[]>(`${this.baseUrl}/api/mediumtype`, {
+    return this.httpClient.get<MediumType[]>(`${this.baseUrl}/web/mediumtype`, {
       headers: {
         'include_relations': String(include_relations),
       }
@@ -18,7 +18,7 @@ export class MediumTypeService {
   }
 
   public getMediumType(id: number, include_relations: boolean) {
-    return this.httpClient.get<MediumType>(`${this.baseUrl}/api/mediumtype/${id}`, {
+    return this.httpClient.get<MediumType>(`${this.baseUrl}/web/mediumtype/${id}`, {
       headers: {
         'include_relations': String(include_relations),
       }
@@ -26,14 +26,14 @@ export class MediumTypeService {
   }
 
   public createMediumType(mediumtype: MediumType) {
-    return this.httpClient.post<MediumType>(`${this.baseUrl}/api/mediumtype`, { mediumtype });
+    return this.httpClient.post<MediumType>(`${this.baseUrl}/web/mediumtype`, { mediumtype });
   }
 
   public updateMediumType(mediumtype: MediumType) {
-    return this.httpClient.put<MediumType>(`${this.baseUrl}/api/mediumtype/${mediumtype.id}`, { mediumtype });
+    return this.httpClient.put<MediumType>(`${this.baseUrl}/web/mediumtype/${mediumtype.id}`, { mediumtype });
   }
 
   public deleteMediumType(mediumtype: MediumType) {
-    return this.httpClient.delete(`${this.baseUrl}/api/mediumtype/${mediumtype.id}`);
+    return this.httpClient.delete(`${this.baseUrl}/web/mediumtype/${mediumtype.id}`);
   }
 }

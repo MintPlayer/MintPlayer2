@@ -13,11 +13,11 @@ export class SubjectService {
   }
 
   public getLikes(subject: Subject) {
-    return this.httpClient.get<SubjectLikeResponse>(`${this.baseUrl}/api/subject/${subject.id}/likes`);
+    return this.httpClient.get<SubjectLikeResponse>(`${this.baseUrl}/web/subject/${subject.id}/likes`);
   }
 
   public like(subject: Subject, like: boolean) {
-    return this.httpClient.post<SubjectLikeResponse>(`${this.baseUrl}/api/subject/${subject.id}/likes`, like, {
+    return this.httpClient.post<SubjectLikeResponse>(`${this.baseUrl}/web/subject/${subject.id}/likes`, like, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -26,11 +26,11 @@ export class SubjectService {
 
   public suggest(search: string, subjects: eSubjectType[]) {
     var subjects_concat = subjects.join('-');
-    return this.httpClient.get<Subject[]>(`${this.baseUrl}/api/subject/search/suggest/${subjects_concat}/${search}`);
+    return this.httpClient.get<Subject[]>(`${this.baseUrl}/web/subject/search/suggest/${subjects_concat}/${search}`);
   }
 
   public search(search: string, subjects: eSubjectType[]) {
     var subjects_concat = subjects.join('-');
-    return this.httpClient.get<SearchResults>(`${this.baseUrl}/api/subject/search/${subjects_concat}/${search}`);
+    return this.httpClient.get<SearchResults>(`${this.baseUrl}/web/subject/search/${subjects_concat}/${search}`);
   }
 }
