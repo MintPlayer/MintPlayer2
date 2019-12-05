@@ -74,13 +74,13 @@
         </span>
         <ul [@slideUpDown]="level1menu == 'media' ? 'in' : 'out'">
           <li>
-            <a [routerLink]='["/mediumtype"]' title="Manage media" (click)="onItemSelected()">
+            <a [routerLink]='["/medium-type"]' title="Manage media" (click)="onItemSelected()">
               <i class="fa fa-list"></i>
               All media
             </a>
           </li>
           <li>
-            <a [routerLink]='["/mediumtype/create"]' title="Add medium" (click)="onItemSelected()">
+            <a [routerLink]='["/medium-type","create"]' title="Add medium" (click)="onItemSelected()">
               <i class="fa fa-plus"></i>
               Add medium
             </a>

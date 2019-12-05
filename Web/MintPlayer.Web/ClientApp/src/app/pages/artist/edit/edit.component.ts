@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ArtistService } from '../../../services/artist/artist.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Title } from '@angular/platform-browser';
-import { Artist } from '../../../interfaces/artist';
 import { HttpHeaders } from '@angular/common/http';
+import { Title } from '@angular/platform-browser';
+import { ArtistService } from '../../../services/artist/artist.service';
+import { Artist } from '../../../interfaces/artist';
 import { Person } from '../../../interfaces/person';
+import { MediumType } from '../../../interfaces/medium-type';
 
 @Component({
   selector: 'app-edit',
@@ -34,6 +35,7 @@ export class ArtistEditComponent implements OnInit {
     media: [],
     text: ''
   }
+  mediumTypes: MediumType[] = [];
 
   httpHeaders: HttpHeaders = new HttpHeaders({
     'include_relations': String(true)

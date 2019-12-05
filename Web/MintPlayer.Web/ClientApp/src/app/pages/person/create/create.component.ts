@@ -4,6 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { Person } from '../../../interfaces/person';
 import { PersonService } from '../../../services/person/person.service';
 import { MediumTypeService } from '../../../services/medium-type/medium-type.service';
+import { MediumType } from '../../../interfaces/medium-type';
 
 @Component({
   selector: 'app-create',
@@ -16,7 +17,7 @@ export class PersonCreateComponent implements OnInit {
     this.titleService.setTitle('Create person');
   }
 
-  public person: Person = {
+  person: Person = {
     id: 0,
     firstName: "",
     lastName: "",
@@ -26,6 +27,7 @@ export class PersonCreateComponent implements OnInit {
     media: [],
     text: ""
   };
+  mediumTypes: MediumType[] = [];
 
   public savePerson() {
     this.personService.createPerson(this.person).subscribe((person) => {

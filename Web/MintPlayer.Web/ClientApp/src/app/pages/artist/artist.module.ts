@@ -8,6 +8,7 @@ import { ArtistCreateComponent } from './create/create.component';
 import { ArtistEditComponent } from './edit/edit.component';
 import { ArtistShowComponent } from './show/show.component';
 import { ControlsModule } from '../../controls/controls.module';
+import { ComponentsModule } from '../../components/components.module';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { ControlsModule } from '../../controls/controls.module';
     CommonModule,
     FormsModule,
     ControlsModule,
+    ComponentsModule,
     ArtistRoutingModule
   ]
 })

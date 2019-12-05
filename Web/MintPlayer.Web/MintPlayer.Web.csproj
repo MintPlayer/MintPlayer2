@@ -36,6 +36,7 @@
     <None Remove="ClientApp\src\app\interfaces\account\user-data.ts" />
     <None Remove="ClientApp\src\app\interfaces\account\user.ts" />
     <None Remove="ClientApp\src\app\interfaces\login-result.ts" />
+    <None Remove="ClientApp\src\app\interfaces\player-type.ts" />
     <None Remove="ClientApp\src\styles\animations\slide-up-down.animation.ts" />
     <None Remove="ClientApp\tsconfig.app.json" />
     <None Remove="ClientApp\tsconfig.json" />
@@ -63,6 +64,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\account\user-data.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\account\user.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\login-result.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\player-type.ts" />
     <TypeScriptCompile Include="ClientApp\src\styles\animations\slide-up-down.animation.ts" />
   </ItemGroup>
 

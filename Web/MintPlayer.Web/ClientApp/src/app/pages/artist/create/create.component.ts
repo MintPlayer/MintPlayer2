@@ -4,6 +4,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { ArtistService } from '../../../services/artist/artist.service';
 import { Artist } from '../../../interfaces/artist';
 import { Person } from '../../../interfaces/person';
+import { MediumType } from '../../../interfaces/medium-type';
 
 @Component({
   selector: 'app-create',
@@ -14,7 +15,7 @@ export class ArtistCreateComponent implements OnInit {
   constructor(private artistService: ArtistService, private router: Router) {
   }
 
-  public artist: Artist = {
+  artist: Artist = {
     id: 0,
     name: '',
     yearStarted: null,
@@ -25,6 +26,7 @@ export class ArtistCreateComponent implements OnInit {
     media: [],
     text: ''
   };
+  mediumTypes: MediumType[] = [];
 
   public currentMemberChanged(person: [Person, string]) {
     var action = person[1]; // add, remove

@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Guid } from 'guid-typescript';
 import { AccountService } from '../../../services/account/account.service';
 import { UserData } from '../../../interfaces/account/user-data';
 import { User } from '../../../interfaces/account/user';
@@ -16,7 +17,7 @@ export class RegisterComponent implements OnInit {
 
   public data: UserData = {
     user: {
-      id: null,
+      id: Guid.createEmpty()["value"],
       userName: '',
       email: '',
       pictureUrl: ''

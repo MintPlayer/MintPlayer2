@@ -4,6 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { Person } from '../../../interfaces/person';
 import { PersonService } from '../../../services/person/person.service';
 import { MediumTypeService } from '../../../services/medium-type/medium-type.service';
+import { MediumType } from '../../../interfaces/medium-type';
 
 @Component({
   selector: 'app-edit',
@@ -34,6 +35,7 @@ export class PersonEditComponent implements OnInit {
     media: [],
     text: ""
   };
+  mediumTypes: MediumType[] = [];
 
   updatePerson() {
     this.personService.updatePerson(this.person).subscribe(() => {
