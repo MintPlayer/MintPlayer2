@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <None Remove=".gitignore" />
+    <None Remove="ClientApp\src\app\controls\autocomplete\IAutocompleteElement.ts" />
     <None Remove="ClientApp\src\app\controls\select2\ISelect2Element.ts" />
     <None Remove="ClientApp\src\app\enums\ePlayerType.ts" />
     <None Remove="ClientApp\src\app\enums\eSidebarState.ts" />
@@ -56,6 +57,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\controls\autocomplete\IAutocompleteElement.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\controls\select2\ISelect2Element.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\enums\ePlayerType.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\enums\eSidebarState.ts" />
