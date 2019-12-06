@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MintPlayer.Data.Dtos;
 using MintPlayer.Data.Exceptions.Account;
+using MintPlayer.Data.Exceptions.Account.ExternalLogin;
 using MintPlayer.Data.Repositories.Interfaces;
 using MintPlayer.Web.ViewModels.Account;
 
@@ -55,6 +56,62 @@ namespace MintPlayer.Web.Controllers.Web
 			catch (Exception ex)
 			{
 				return StatusCode(500);
+			}
+		}
+
+		[AllowAnonymous]
+		[HttpGet("connect/{provider}")]
+		public async Task<ActionResult> ExternalLogin(string provider)
+		{
+			var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new { provider });
+			var properties = accountRepository.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+			return Challenge(properties, provider);
+		}
+
+		[HttpGet("connect/{provider}/callback")]
+		public async Task<ActionResult> ExternalLoginCallback([FromRoute]string provider)
+		{
+			var model = new LoginResultVM();
+			try
+			{
+				var login_result = await accountRepository.PerfromExternalLogin();
+				if (login_result.Status)
+				{
+					model.Status = true;
+					model.Platform = login_result.Platform;
+
+					return View(model);
+				}
+				else
+				{
+					model.Status = false;
+					model.Platform = login_result.Platform;
+
+					model.Error = login_result.Error;
+					model.ErrorDescription = login_result.ErrorDescription;
+
+					return View(model);
+				}
+			}
+			catch (OtherAccountException otherAccountEx)
+			{
+				model.Status = false;
+				model.Platform = provider;
+
+				model.Error = "Could not login";
+				model.ErrorDescription = otherAccountEx.Message;
+
+				return View(model);
+			}
+			catch (Exception ex)
+			{
+				model.Status = false;
+				model.Platform = provider;
+
+				model.Error = "Could not login";
+				model.ErrorDescription = "There was an error with your social login";
+
+				return View(model);
 			}
 		}
 

@@ -54,5 +54,16 @@ export class LoginComponent implements OnInit {
   forgotPassword() {
   }
 
+  socialLoginDone(result: LoginResult) {
+    if (result.status) {
+      this.accountService.currentUser().subscribe((user) => {
+        this.loginComplete.emit(user);
+        this.router.navigateByUrl(this.returnUrl);
+      });
+    } else {
+      this.loginResult = result;
+    }
+  }
+
   @Output() loginComplete: EventEmitter<User> = new EventEmitter();
 }

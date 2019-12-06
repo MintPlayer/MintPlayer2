@@ -1,0 +1,23 @@
+﻿@model MintPlayer.Web.ViewModels.Account.LoginResultVM
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bezig met verwerken...</title>
+    <script type="text/javascript">
+@if (Model.Status)
+{
+    <text>
+        window.opener.postMessage('Hello', window.location.origin);
+    </text>
+}
+else
+{
+    <text>
+        window.opener.postMessage('No hello', window.location.origin);
+    </text>
+}
+    </script>
+</head>
+<body>
+</body>
+</html>

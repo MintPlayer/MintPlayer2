@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MintPlayer.Data.Dtos;
 using MintPlayer.Data.Exceptions.Account;
+using MintPlayer.Data.Exceptions.Account.ExternalLogin;
 using MintPlayer.Data.Options;
 
 namespace MintPlayer.Data.Repositories
@@ -98,6 +100,71 @@ namespace MintPlayer.Data.Repositories
 			{
 				throw new LoginException(ex);
 			}
+		}
+
+		public Microsoft.AspNetCore.Authentication.AuthenticationProperties ConfigureExternalAuthenticationProperties(string provider, string redirectUrl)
+		{
+			var properties = signin_manager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+			return properties;
+		}
+
+		public async Task<LoginResult> PerfromExternalLogin()
+		{
+			var info = await signin_manager.GetExternalLoginInfoAsync();
+			if (info == null)
+				throw new UnauthorizedAccessException();
+
+			var user = await user_manager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+			if (user == null)
+			{
+				string username = info.Principal.FindFirstValue(ClaimTypes.Name);
+				string email = info.Principal.FindFirstValue(ClaimTypes.Email);
+
+				var new_user = new Entities.User
+				{
+					UserName = username,
+					Email = email,
+					PictureUrl = null
+				};
+
+				var id_result = await user_manager.CreateAsync(new_user);
+				if (id_result.Succeeded)
+				{
+					user = new_user;
+				}
+				else
+				{
+					// User creation failed, probably because the email address is already present in the database
+					if (id_result.Errors.Any(e => e.Code == "DuplicateEmail"))
+					{
+						var existing = await user_manager.FindByEmailAsync(email);
+						var existing_logins = await user_manager.GetLoginsAsync(existing);
+
+						if (existing_logins.Any())
+						{
+							throw new OtherAccountException(existing_logins);
+						}
+						else
+						{
+							throw new Exception("Could not create account from social profile");
+						}
+					}
+					else
+					{
+						throw new Exception("Could not create account from social profile");
+					}
+				}
+
+				await user_manager.AddLoginAsync(user, new UserLoginInfo(info.LoginProvider, info.ProviderKey, info.ProviderDisplayName));
+			}
+
+			await signin_manager.SignInAsync(user, false);
+			return new LoginResult
+			{
+				Status = true,
+				Platform = info.LoginProvider,
+				User = ToDto(user)
+			};
 		}
 
 		public async Task<User> GetCurrentUser(ClaimsPrincipal userProperty)
