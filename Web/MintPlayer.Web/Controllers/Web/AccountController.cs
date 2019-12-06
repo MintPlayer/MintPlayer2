@@ -60,6 +60,14 @@ namespace MintPlayer.Web.Controllers.Web
 		}
 
 		[AllowAnonymous]
+		[HttpGet("providers")]
+		public async Task<List<string>> Providers()
+		{
+			var result = await accountRepository.GetExternalLoginProviders();
+			return result.Select(s => s.DisplayName).ToList();
+		}
+
+		[AllowAnonymous]
 		[HttpGet("connect/{provider}")]
 		public async Task<ActionResult> ExternalLogin(string provider)
 		{
@@ -113,6 +121,57 @@ namespace MintPlayer.Web.Controllers.Web
 
 				return View(model);
 			}
+		}
+
+		[Authorize]
+		[HttpGet("logins")]
+		public async Task<List<string>> GetExternalLogins()
+		{
+			var logins = await accountRepository.GetExternalLogins(User);
+			return logins.Select(l => l.ProviderDisplayName).ToList();
+		}
+
+		[Authorize]
+		[HttpGet("add/{provider}")]
+		public async Task<ActionResult> AddExternalLogin(string provider)
+		{
+			var redirectUrl = Url.Action(nameof(AddExternalLoginCallback), "Account", new { provider });
+			var properties = accountRepository.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+			return Challenge(properties, provider);
+		}
+
+		[Authorize]
+		[HttpGet("add/{provider}/callback")]
+		public async Task<ActionResult> AddExternalLoginCallback([FromRoute]string provider)
+		{
+			var model = new LoginResultVM();
+			try
+			{
+				await accountRepository.AddExternalLogin(User);
+
+				model.Status = true;
+				model.Platform = provider;
+
+				return View(model);
+			}
+			catch (Exception)
+			{
+				model.Status = false;
+				model.Platform = provider;
+
+				model.Error = "Could not login";
+				model.ErrorDescription = "There was an error with your social login";
+
+				return View(model);
+			}
+		}
+
+		[Authorize]
+		[HttpDelete("logins/{provider}")]
+		public async Task<IActionResult> DeleteLogin(string provider)
+		{
+			await accountRepository.RemoveExternalLogin(User, provider);
+			return Ok();
 		}
 
 		[Authorize]

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -102,6 +104,12 @@ namespace MintPlayer.Data.Repositories
 			}
 		}
 
+		public async Task<IEnumerable<AuthenticationScheme>> GetExternalLoginProviders()
+		{
+			var providers = await signin_manager.GetExternalAuthenticationSchemesAsync();
+			return providers.ToList();
+		}
+
 		public Microsoft.AspNetCore.Authentication.AuthenticationProperties ConfigureExternalAuthenticationProperties(string provider, string redirectUrl)
 		{
 			var properties = signin_manager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
@@ -165,6 +173,45 @@ namespace MintPlayer.Data.Repositories
 				Platform = info.LoginProvider,
 				User = ToDto(user)
 			};
+		}
+
+		public async Task<IEnumerable<UserLoginInfo>> GetExternalLogins(ClaimsPrincipal userProperty)
+		{
+			// Get current user
+			var user = await user_manager.GetUserAsync(userProperty);
+			if (user == null) throw new UnauthorizedAccessException();
+
+			var user_logins = await user_manager.GetLoginsAsync(user);
+			return user_logins;
+		}
+
+		public async Task AddExternalLogin(ClaimsPrincipal userProperty)
+		{
+			// Get current user
+			var user = await user_manager.GetUserAsync(userProperty);
+			if (user == null) throw new UnauthorizedAccessException();
+
+			// Get login info
+			var info = await signin_manager.GetExternalLoginInfoAsync();
+			if (info == null) throw new UnauthorizedAccessException();
+
+			var result = await user_manager.AddLoginAsync(user, info);
+			if (!result.Succeeded) throw new Exception(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
+		}
+
+		public async Task RemoveExternalLogin(ClaimsPrincipal userProperty, string provider)
+		{
+			// Get current user
+			var user = await user_manager.GetUserAsync(userProperty);
+			if (user == null) throw new UnauthorizedAccessException();
+
+			var user_logins = await user_manager.GetLoginsAsync(user);
+			var login = user_logins.FirstOrDefault(l => l.LoginProvider == provider);
+
+			if (login == null) throw new InvalidOperationException($"Could not remove {provider} login");
+
+			var result = await user_manager.RemoveLoginAsync(user, login.LoginProvider, login.ProviderKey);
+			if (!result.Succeeded) throw new Exception($"Could not remove {provider} login");
 		}
 
 		public async Task<User> GetCurrentUser(ClaimsPrincipal userProperty)

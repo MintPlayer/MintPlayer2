@@ -17,6 +17,15 @@ export class AccountService {
   public login(email: string, password: string) {
     return this.httpClient.post<LoginResult>(`${this.baseUrl}/web/account/login`, { email, password });
   }
+  public getProviders() {
+    return this.httpClient.get<string[]>(`${this.baseUrl}/web/account/providers`);
+  }
+  public getLogins() {
+    return this.httpClient.get<string[]>(`${this.baseUrl}/web/account/logins`);
+  }
+  public removeLogin(provider: string) {
+    return this.httpClient.delete(`${this.baseUrl}/web/account/logins/${provider}`);
+  }
   public currentUser() {
     return this.httpClient.get<User>(`${this.baseUrl}/web/account/current-user`);
   }

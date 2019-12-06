@@ -1,0 +1,33 @@
+﻿@model MintPlayer.Web.ViewModels.Account.LoginResultVM
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bezig met verwerken...</title>
+    <script type="text/javascript">
+@if (Model.Status)
+{
+    <text>
+        var message = {
+            status: true,
+            platform: "@Model.Platform"
+        };
+        window.opener.postMessage(JSON.stringify(message), window.location.origin);
+    </text>
+}
+else
+{
+    <text>
+        var message = {
+            status: false,
+            platform: "@Model.Platform",
+            error: "@Model.Error",
+            errorDescription: "@Model.ErrorDescription"
+        };
+        window.opener.postMessage(JSON.stringify(message), window.location.origin);
+    </text>
+}
+    </script>
+</head>
+<body>
+</body>
+</html>
