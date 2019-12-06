@@ -158,7 +158,7 @@ namespace MintPlayer.Data.Repositories
 				await user_manager.AddLoginAsync(user, new UserLoginInfo(info.LoginProvider, info.ProviderKey, info.ProviderDisplayName));
 			}
 
-			await signin_manager.SignInAsync(user, false);
+			await signin_manager.SignInAsync(user, true);
 			return new LoginResult
 			{
 				Status = true,

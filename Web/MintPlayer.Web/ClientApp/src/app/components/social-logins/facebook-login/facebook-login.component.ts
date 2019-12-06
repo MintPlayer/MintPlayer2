@@ -58,19 +58,12 @@ export class FacebookLoginComponent implements OnInit, OnDestroy {
     // Filter out any other trash
     if (message.data == "" || message.data == null) return;
 
-    if (message.data === 'Hello') {
-      alert('Hello');
-      return;
-    }
-    if (message.data === 'No hello') {
-      alert('No hello');
-      return;
-    }
-
     const result = <LoginResult>JSON.parse(message.data);
-    if (result.platform === 'Facebook') {
-      this.authWindow.close();
-      this.LoginSuccessOrFailed.emit(result);
+    if (result.status === true) {
+      if (result.platform === 'Facebook') {
+        this.authWindow.close();
+        this.LoginSuccessOrFailed.emit(result);
+      }
     }
   }
 }

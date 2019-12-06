@@ -7,13 +7,23 @@
 @if (Model.Status)
 {
     <text>
-        window.opener.postMessage('Hello', window.location.origin);
+        var message = {
+            status: true,
+            platform: "@Model.Platform"
+        };
+        window.opener.postMessage(JSON.stringify(message), window.location.origin);
     </text>
 }
 else
 {
     <text>
-        window.opener.postMessage('No hello', window.location.origin);
+        var message = {
+            status: false,
+            platform: "@Model.Platform",
+            error: "@Model.Error",
+            errorDescription: "@Model.ErrorDescription""
+        };
+        window.opener.postMessage(JSON.stringify(message), window.location.origin);
     </text>
 }
     </script>
