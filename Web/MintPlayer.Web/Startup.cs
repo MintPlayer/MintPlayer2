@@ -65,7 +65,11 @@ namespace MintPlayer.Web
             });
 
             services
-                .AddControllersWithViews()
+                .AddControllersWithViews(options =>
+                {
+                    options.RespectBrowserAcceptHeader = true;
+                })
+                .AddXmlSerializerFormatters()
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
