@@ -27,7 +27,7 @@ export class BaseLoginComponent {
   }
 
   showPopup() {
-    this.authWindow = window.open(`${this.baseUrl}/web/Account/${this.action}/Facebook`, null, 'width=600,height=400');
+    this.authWindow = window.open(`${this.baseUrl}/web/Account/${this.action}/${this.platform}`, null, 'width=600,height=400');
     this.isOpen = true;
     var timer = setInterval(() => {
       if (this.authWindow.closed) {
@@ -49,11 +49,13 @@ export class BaseLoginComponent {
     if (message.data == "" || message.data == null) return;
 
     const result = <LoginResult>JSON.parse(message.data);
-    if (result.status === true) {
-      if (result.platform === this.platform) {
+    if (result.platform === this.platform) {
+      //if (result.status === true) {
         this.authWindow.close();
         this.LoginSuccessOrFailed.emit(result);
-      }
+      //} else {
+      //  debugger;
+      //}
     }
   }
 }
