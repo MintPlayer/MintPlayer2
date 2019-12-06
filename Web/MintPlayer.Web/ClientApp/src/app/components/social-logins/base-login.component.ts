@@ -9,7 +9,7 @@ export class BaseLoginComponent {
   @Input() public action: "add" | "connect";
   @Output() public LoginSuccessOrFailed: EventEmitter<LoginResult> = new EventEmitter();
 
-  constructor(@Inject('BASE_URL') private baseUrl: string, protected platform: string) {
+  constructor(private baseUrl: string, private platform: string) {
     this.listener = this.handleMessage.bind(this);
     if (window.addEventListener) {
       window.addEventListener("message", this.listener, false);
