@@ -7,14 +7,14 @@ import { PlayerType } from '../interfaces/player-type';
 })
 export class PlayerTypeHelper {
   public getPlayerTypes() {
-    var playerTypes = Object.keys(ePlayerType);
-    var result = playerTypes.splice(playerTypes.length / 2).map<PlayerType>((key) => {
+    var playerTypeValues = Object.values(ePlayerType);
+    var playerTypeValuesSpliced = playerTypeValues.splice(playerTypeValues.length / 2);
+    
+    return playerTypeValuesSpliced.map<PlayerType>((value) => {
       return {
-        value: playerTypes[key],
-        description: key
+        value: <ePlayerType>value,
+        description: playerTypeValues[value]
       };
     });
-    debugger;
-    return result;
   }
 }

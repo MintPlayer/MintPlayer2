@@ -33,7 +33,9 @@ export class SongEditComponent implements OnInit {
     artists: [],
     media: [],
     lyrics: "",
-    text: ""
+    text: "",
+    description: '',
+    youtubeId: ''
   };
   mediumTypes: MediumType[] = [];
 

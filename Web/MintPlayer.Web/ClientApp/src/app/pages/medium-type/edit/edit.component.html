@@ -24,7 +24,7 @@
       <div class="col-sm-8 col-xl-10">
         <div class="input-group">
           <select class="form-control" name="playertype" [ngModel]="mediumType.playerType" (ngModelChange)="playerTypeSelected($event)">
-            <option *ngFor="let playerType of playerTypes" [ngValue]="playerType.id">{{ playerType.description }}</option>
+            <option *ngFor="let playerType of playerTypes" [ngValue]="playerType.value">{{ playerType.description }}</option>
           </select>
         </div>
       </div>

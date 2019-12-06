@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MediumType } from '../../../interfaces/medium-type';
 import { Medium } from '../../../interfaces/medium';
+import { MediumTypeService } from '../../../services/medium-type/medium-type.service';
 
 @Component({
   selector: 'media-manager',
@@ -9,7 +10,10 @@ import { Medium } from '../../../interfaces/medium';
 })
 export class MediaManagerComponent implements OnInit {
 
-  constructor() {
+  constructor(private mediumTypeService: MediumTypeService) {
+    this.mediumTypeService.getMediumTypes(false).subscribe((result) => {
+      this.mediumTypes = result;
+    });
   }
 
   ngOnInit() {

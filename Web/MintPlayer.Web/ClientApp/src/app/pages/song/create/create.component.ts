@@ -29,7 +29,9 @@ export class SongCreateComponent implements OnInit {
 		artists: [],
 		media: [],
 		lyrics: "",
-		text: ""
+    text: "",
+    description: '',
+    youtubeId: ''
   };
   mediumTypes: MediumType[] = [];
 

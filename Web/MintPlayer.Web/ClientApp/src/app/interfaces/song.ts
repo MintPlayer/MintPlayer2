@@ -7,6 +7,8 @@ export interface Song extends Subject {
   lyrics: string;
 
   text: string;
+  youtubeId: string;
+  description: string;
 
   artists: Artist[];
 }
