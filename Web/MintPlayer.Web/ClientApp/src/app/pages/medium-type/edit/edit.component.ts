@@ -17,7 +17,7 @@ export class MediumTypeEditComponent implements OnInit {
     var id = parseInt(this.route.snapshot.paramMap.get("id"));
     this.playerTypes = this.playerTypeHelper.getPlayerTypes();
 
-    this.mediumTypeService.getMediumType(id, false).subscribe(mediumtype => {
+    this.mediumTypeService.getMediumType(id, false).then((mediumtype) => {
       this.mediumType = mediumtype;
       this.titleService.setTitle(`Edit medium type: ${mediumtype.description}`);
       this.oldMediumTypeDescription = mediumtype.description;
@@ -37,7 +37,7 @@ export class MediumTypeEditComponent implements OnInit {
   }
 
   public updateMediumType() {
-    this.mediumTypeService.updateMediumType(this.mediumType).subscribe(() => {
+    this.mediumTypeService.updateMediumType(this.mediumType).then(() => {
       this.router.navigate(["medium-type", this.mediumType.id]);
     });
   }

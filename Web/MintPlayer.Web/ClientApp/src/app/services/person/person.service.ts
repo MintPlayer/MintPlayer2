@@ -16,7 +16,7 @@ export class PersonService {
         'count': String(count),
         'page': String(page)
       }
-    });
+    }).toPromise();
   }
 
   public getPerson(id: number, include_relations: boolean) {
@@ -24,18 +24,18 @@ export class PersonService {
       headers: {
         'include_relations': String(include_relations)
       }
-    });
+    }).toPromise();
   }
 
   public createPerson(person: Person) {
-    return this.httpClient.post<Person>(`${this.baseUrl}/web/person`, { person });
+    return this.httpClient.post<Person>(`${this.baseUrl}/web/person`, { person }).toPromise();
   }
 
   public updatePerson(person: Person) {
-    return this.httpClient.put(`${this.baseUrl}/web/person/${person.id}`, { person });
+    return this.httpClient.put(`${this.baseUrl}/web/person/${person.id}`, { person }).toPromise();
   }
 
   public deletePerson(person: Person) {
-    return this.httpClient.delete(`${this.baseUrl}/web/person/${person.id}`);
+    return this.httpClient.delete(`${this.baseUrl}/web/person/${person.id}`).toPromise();
   }
 }

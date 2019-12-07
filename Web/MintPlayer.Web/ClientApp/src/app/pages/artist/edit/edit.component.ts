@@ -16,7 +16,7 @@ export class ArtistEditComponent implements OnInit {
 
   constructor(private artistService: ArtistService, private router: Router, private route: ActivatedRoute, private titleService: Title) {
     var id = parseInt(this.route.snapshot.paramMap.get("id"));
-    this.artistService.getArtist(id, true).subscribe((artist) => {
+    this.artistService.getArtist(id, true).then((artist) => {
       this.artist = artist;
       this.titleService.setTitle(`Edit artist: ${artist.name}`);
       this.oldName = artist.name;
@@ -66,7 +66,7 @@ export class ArtistEditComponent implements OnInit {
   }
 
   public updateArtist() {
-    this.artistService.updateArtist(this.artist).subscribe(() => {
+    this.artistService.updateArtist(this.artist).then(() => {
       this.router.navigate(['artist', this.artist.id]);
     });
   }

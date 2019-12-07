@@ -11,7 +11,7 @@ import { MediumTypeService } from '../../../services/medium-type/medium-type.ser
 export class MediaManagerComponent implements OnInit {
 
   constructor(private mediumTypeService: MediumTypeService) {
-    this.mediumTypeService.getMediumTypes(false).subscribe((result) => {
+    this.mediumTypeService.getMediumTypes(false).then((result) => {
       this.mediumTypes = result;
     });
   }

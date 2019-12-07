@@ -18,7 +18,7 @@ export class PersonListComponent implements OnInit {
   people: Person[] = [];
 
   private loadPeople() {
-    this.personService.getPeople(false).subscribe(people => {
+    this.personService.getPeople(false).then(people => {
       this.people = people;
     });
   }

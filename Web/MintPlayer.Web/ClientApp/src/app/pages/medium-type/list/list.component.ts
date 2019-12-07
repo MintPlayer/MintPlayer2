@@ -12,7 +12,7 @@ import { MediumTypeService } from '../../../services/medium-type/medium-type.ser
 export class MediumTypeListComponent implements OnInit {
   constructor(private mediumTypeService: MediumTypeService, private titleService: Title) {
     this.titleService.setTitle('Medium types');
-    this.mediumTypeService.getMediumTypes(false).subscribe(mediumtypes => {
+    this.mediumTypeService.getMediumTypes(false).then((mediumtypes) => {
       this.mediumTypes = mediumtypes;
     });
   }

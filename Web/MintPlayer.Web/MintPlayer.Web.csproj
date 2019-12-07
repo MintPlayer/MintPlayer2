@@ -27,6 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\favicon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove=".gitignore" />
     <None Remove="ClientApp\src\app\components\social-logins\base-login.component.ts" />
     <None Remove="ClientApp\src\app\controls\autocomplete\IAutocompleteElement.ts" />
@@ -55,6 +59,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\favicon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MintPlayer.Data\MintPlayer.Data.csproj" />
   </ItemGroup>
 
@@ -72,10 +80,6 @@
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\login-result.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\player-type.ts" />
     <TypeScriptCompile Include="ClientApp\src\styles\animations\slide-up-down.animation.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ClientApp\src\assets\logo\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

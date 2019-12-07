@@ -32,10 +32,8 @@ export class RegisterComponent implements OnInit {
   }
 
   public register() {
-    this.accountService.register(this.data).subscribe(() => {
-      this.accountService.login(
-        this.data.user.email, this.data.password
-      ).subscribe((login_result) => {
+    this.accountService.register(this.data).then(() => {
+      this.accountService.login(this.data.user.email, this.data.password).then((login_result) => {
         if (login_result.status === true) {
           this.router.navigate(['/']);
           this.loginComplete.emit(login_result.user);
@@ -43,7 +41,7 @@ export class RegisterComponent implements OnInit {
           this.errorDescription = login_result.errorDescription;
         }
       });
-    }, (error: HttpErrorResponse) => {
+    }).catch((error: HttpErrorResponse) => {
       this.errorDescription = "Something went wrong here";
     });
   }

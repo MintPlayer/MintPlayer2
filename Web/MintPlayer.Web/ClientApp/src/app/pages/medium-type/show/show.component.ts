@@ -13,14 +13,14 @@ import { MediumTypeService } from '../../../services/medium-type/medium-type.ser
 export class MediumTypeShowComponent implements OnInit {
   constructor(private mediumTypeService: MediumTypeService, private router: Router, private route: ActivatedRoute, private titleService: Title) {
     var id = parseInt(this.route.snapshot.paramMap.get("id"));
-    this.mediumTypeService.getMediumType(id, true).subscribe(mediumtype => {
+    this.mediumTypeService.getMediumType(id, true).then((mediumtype) => {
       this.mediumType = mediumtype;
       this.titleService.setTitle(`Medium type: ${mediumtype.description}`);
     });
   }
 
   public deleteMediumType() {
-    this.mediumTypeService.deleteMediumType(this.mediumType).subscribe(() => {
+    this.mediumTypeService.deleteMediumType(this.mediumType).then(() => {
       this.router.navigate(["medium-type"]);
     });
   }

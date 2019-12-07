@@ -13,7 +13,7 @@ export class SubjectService {
   }
 
   public getLikes(subject: Subject) {
-    return this.httpClient.get<SubjectLikeResponse>(`${this.baseUrl}/web/subject/${subject.id}/likes`);
+    return this.httpClient.get<SubjectLikeResponse>(`${this.baseUrl}/web/subject/${subject.id}/likes`).toPromise();
   }
 
   public like(subject: Subject, like: boolean) {
@@ -21,16 +21,16 @@ export class SubjectService {
       headers: {
         "Content-Type": "application/json"
       }
-    });
+    }).toPromise();
   }
 
   public suggest(search: string, subjects: eSubjectType[]) {
     var subjects_concat = subjects.join('-');
-    return this.httpClient.get<Subject[]>(`${this.baseUrl}/web/subject/search/suggest/${subjects_concat}/${search}`);
+    return this.httpClient.get<Subject[]>(`${this.baseUrl}/web/subject/search/suggest/${subjects_concat}/${search}`).toPromise();
   }
 
   public search(search: string, subjects: eSubjectType[]) {
     var subjects_concat = subjects.join('-');
-    return this.httpClient.get<SearchResults>(`${this.baseUrl}/web/subject/search/${subjects_concat}/${search}`);
+    return this.httpClient.get<SearchResults>(`${this.baseUrl}/web/subject/search/${subjects_concat}/${search}`).toPromise();
   }
 }

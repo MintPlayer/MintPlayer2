@@ -33,14 +33,14 @@ export class LoginComponent implements OnInit {
   };
 
   login() {
-    this.accountService.login(this.email, this.password).subscribe((result) => {
+    this.accountService.login(this.email, this.password).then((result) => {
       if (result.status === true) {
         this.router.navigateByUrl(this.returnUrl);
         this.loginComplete.emit(result.user);
       } else {
         this.loginResult = result;
       }
-    }, (error: HttpErrorResponse) => {
+    }).catch((error: HttpErrorResponse) => {
       this.loginResult = {
         status: false,
         platform: 'local',
@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
 
   socialLoginDone(result: LoginResult) {
     if (result.status) {
-      this.accountService.currentUser().subscribe((user) => {
+      this.accountService.currentUser().then((user) => {
         this.loginComplete.emit(user);
         this.router.navigateByUrl(this.returnUrl);
       });

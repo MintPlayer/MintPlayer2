@@ -34,7 +34,7 @@ export class MediumTypeCreateComponent implements OnInit {
   }
 
   public saveMediumType() {
-    this.mediumTypeService.createMediumType(this.mediumType).subscribe((mediumType) => {
+    this.mediumTypeService.createMediumType(this.mediumType).then((mediumType) => {
       this.router.navigate(["medium-type", mediumType.id]);
     });
   }

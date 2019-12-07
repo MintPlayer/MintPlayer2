@@ -13,7 +13,7 @@ export class ArtistShowComponent implements OnInit {
 
   constructor(private artistService: ArtistService, private router: Router, private route: ActivatedRoute, private titleService: Title) {
     var id = parseInt(this.route.snapshot.paramMap.get("id"));
-    this.artistService.getArtist(id, true).subscribe(artist => {
+    this.artistService.getArtist(id, true).then(artist => {
       this.artist = artist;
       if (artist != null) {
         this.titleService.setTitle(artist.name);
@@ -22,7 +22,7 @@ export class ArtistShowComponent implements OnInit {
   }
 
   public deleteArtist() {
-    this.artistService.deleteArtist(this.artist).subscribe(() => {
+    this.artistService.deleteArtist(this.artist).then(() => {
       this.router.navigate(["artist"]);
     });
   }

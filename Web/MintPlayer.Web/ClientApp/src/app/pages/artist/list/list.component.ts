@@ -20,7 +20,7 @@ export class ArtistListComponent implements OnInit {
   }
 
   private loadArtists() {
-    this.artistService.getArtists(false).subscribe((artists) => {
+    this.artistService.getArtists(false).then((artists) => {
       this.artists = artists;
     });
   }

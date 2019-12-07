@@ -12,24 +12,24 @@ export class AccountService {
   }
 
   public register(data: UserData) {
-    return this.httpClient.post(`${this.baseUrl}/web/Account/register`, data);
+    return this.httpClient.post(`${this.baseUrl}/web/Account/register`, data).toPromise();
   }
   public login(email: string, password: string) {
-    return this.httpClient.post<LoginResult>(`${this.baseUrl}/web/account/login`, { email, password });
+    return this.httpClient.post<LoginResult>(`${this.baseUrl}/web/account/login`, { email, password }).toPromise();
   }
   public getProviders() {
-    return this.httpClient.get<string[]>(`${this.baseUrl}/web/account/providers`);
+    return this.httpClient.get<string[]>(`${this.baseUrl}/web/account/providers`).toPromise();
   }
   public getLogins() {
-    return this.httpClient.get<string[]>(`${this.baseUrl}/web/account/logins`);
+    return this.httpClient.get<string[]>(`${this.baseUrl}/web/account/logins`).toPromise();
   }
   public removeLogin(provider: string) {
-    return this.httpClient.delete(`${this.baseUrl}/web/account/logins/${provider}`);
+    return this.httpClient.delete(`${this.baseUrl}/web/account/logins/${provider}`).toPromise();
   }
   public currentUser() {
-    return this.httpClient.get<User>(`${this.baseUrl}/web/account/current-user`);
+    return this.httpClient.get<User>(`${this.baseUrl}/web/account/current-user`).toPromise();
   }
   public logout() {
-    return this.httpClient.post(`${this.baseUrl}/web/account/logout`, {});
+    return this.httpClient.post(`${this.baseUrl}/web/account/logout`, {}).toPromise();
   }
 }

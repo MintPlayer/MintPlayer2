@@ -53,9 +53,9 @@ export class ArtistCreateComponent implements OnInit {
   }
 
   saveArtist() {
-    this.artistService.createArtist(this.artist).subscribe((artist) => {
+    this.artistService.createArtist(this.artist).then((artist) => {
       this.router.navigate(['/artist', artist.id]);
-    })
+    });
   }
 
   public httpHeaders: HttpHeaders = new HttpHeaders({

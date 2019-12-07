@@ -30,7 +30,7 @@ export class PersonCreateComponent implements OnInit {
   mediumTypes: MediumType[] = [];
 
   public savePerson() {
-    this.personService.createPerson(this.person).subscribe((person) => {
+    this.personService.createPerson(this.person).then((person) => {
       this.router.navigate(["person", person.id]);
     });
   }

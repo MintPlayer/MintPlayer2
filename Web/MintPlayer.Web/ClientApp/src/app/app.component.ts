@@ -24,9 +24,9 @@ export class AppComponent {
   playlistToggleButtonState: eToggleButtonState = eToggleButtonState.closed;
 
   constructor(private accountService: AccountService, private youtubeHelper: YoutubeHelper) {
-    this.accountService.currentUser().subscribe((user) => {
+    this.accountService.currentUser().then((user) => {
       this.activeUser = user;
-    }, (error) => {
+    }).catch((error) => {
       this.activeUser = null;
     });
     this.youtubeHelper.loadApi().then(() => {
@@ -61,14 +61,14 @@ export class AppComponent {
   }
 
   logoutClicked() {
-    this.accountService.logout().subscribe(() => {
+    this.accountService.logout().then(() => {
       this.activeUser = null;
     });
   }
 
   //#region Playlist
   playlist: Song[] = [];
-  currentSong: Song = null;
+  currentsong: Song = null;
   endOfPlaylist: boolean = true;
   addToPlaylist = (song: Song) => {
     this.playlist.push(song);
@@ -81,20 +81,22 @@ export class AppComponent {
 
   private playSong(song: Song) {
     if (song.youtubeId !== null) {
-      this.player.playSong(song.youtubeId);
       this.endOfPlaylist = false;
-      this.currentSong = song;
+      this.currentsong = song;
+      this.player.playSong(song.youtubeId);
     }
   }
 
   songEnded() {
-    var current_index = this.playlist.indexOf(this.currentSong);
+    var current_index = this.playlist.indexOf(this.currentsong);
     if (this.playlist.length > current_index + 1) {
       var song = this.playlist[current_index + 1];
       this.playSong(song);
     } else {
       this.endOfPlaylist = true;
-      this.currentSong = null;
+      setTimeout(() => {
+        this.currentsong = null;
+      }, 5);
     }
   }
   //#endregion

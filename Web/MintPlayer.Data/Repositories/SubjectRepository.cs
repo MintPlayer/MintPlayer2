@@ -40,7 +40,7 @@ namespace MintPlayer.Data.Repositories
 		public async Task<bool?> DoesLike(int subjectId)
 		{
 			var user = await user_manager.GetUserAsync(http_context.HttpContext.User);
-			if (user == null) throw new ArgumentNullException(nameof(user));
+			if (user == null) throw new UnauthorizedAccessException();
 			
 			var like = mintplayer_context.Likes
 				.Where(l => l.SubjectId == subjectId)

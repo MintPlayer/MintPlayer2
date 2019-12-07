@@ -10,10 +10,10 @@ import { LoginResult } from '../../../interfaces/login-result';
 export class ProfileComponent implements OnInit {
 
   constructor(private accountService: AccountService) {
-    this.accountService.getLogins().subscribe((logins) => {
+    this.accountService.getLogins().then((logins) => {
       this.userLogins = logins;
     });
-    this.accountService.getProviders().subscribe((providers) => {
+    this.accountService.getProviders().then((providers) => {
       this.loginProviders = providers;
     });
   }
@@ -23,7 +23,7 @@ export class ProfileComponent implements OnInit {
 
   socialLoginDone(result: LoginResult) {
     if (result.status) {
-      this.accountService.getLogins().subscribe((logins) => {
+      this.accountService.getLogins().then((logins) => {
         this.userLogins = logins;
       });
     } else {
@@ -31,7 +31,7 @@ export class ProfileComponent implements OnInit {
   }
 
   removeSocialLogin(provider: string) {
-    this.accountService.removeLogin(provider).subscribe(() => {
+    this.accountService.removeLogin(provider).then(() => {
       this.userLogins.splice(this.userLogins.indexOf(provider), 1);
     });
   }

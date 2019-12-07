@@ -28,7 +28,7 @@ export class SearchComponent implements OnInit {
   }
 
   doSearch() {
-    this.subjectService.search(this.searchterm, [eSubjectType.person, eSubjectType.artist, eSubjectType.song]).subscribe((results) => {
+    this.subjectService.search(this.searchterm, [eSubjectType.person, eSubjectType.artist, eSubjectType.song]).then((results) => {
       this.searchResults = results;
     });
   }

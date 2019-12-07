@@ -16,7 +16,7 @@ export class SongListComponent implements OnInit {
   }
 
   private loadSongs() {
-    this.songService.getSongs(false).subscribe(songs => {
+    this.songService.getSongs(false).then((songs) => {
       this.songs = songs;
     });
   }

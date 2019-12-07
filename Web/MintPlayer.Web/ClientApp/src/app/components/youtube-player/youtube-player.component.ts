@@ -27,14 +27,16 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.youtubeHelper.apiReady.subscribe((ready) => {
+      console.log('api ready callback');
       this.isApiReady = ready;
       if (ready && !this.player) {
+        console.log('Create youtube player');
         this.player = new YT.Player(this.domId, {
           width: this.width,
           height: this.height,
           events: {
             onReady: () => {
-
+              console.log('youtube player ready');
             },
             onStateChange: (state: any) => {
               switch (state.data) {

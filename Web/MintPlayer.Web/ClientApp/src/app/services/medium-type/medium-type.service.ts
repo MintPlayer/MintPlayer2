@@ -14,7 +14,7 @@ export class MediumTypeService {
       headers: {
         'include_relations': String(include_relations),
       }
-    });
+    }).toPromise();
   }
 
   public getMediumType(id: number, include_relations: boolean) {
@@ -22,18 +22,18 @@ export class MediumTypeService {
       headers: {
         'include_relations': String(include_relations),
       }
-    });
+    }).toPromise();
   }
 
   public createMediumType(mediumtype: MediumType) {
-    return this.httpClient.post<MediumType>(`${this.baseUrl}/web/mediumtype`, { mediumtype });
+    return this.httpClient.post<MediumType>(`${this.baseUrl}/web/mediumtype`, { mediumtype }).toPromise();
   }
 
   public updateMediumType(mediumtype: MediumType) {
-    return this.httpClient.put<MediumType>(`${this.baseUrl}/web/mediumtype/${mediumtype.id}`, { mediumtype });
+    return this.httpClient.put<MediumType>(`${this.baseUrl}/web/mediumtype/${mediumtype.id}`, { mediumtype }).toPromise();
   }
 
   public deleteMediumType(mediumtype: MediumType) {
-    return this.httpClient.delete(`${this.baseUrl}/web/mediumtype/${mediumtype.id}`);
+    return this.httpClient.delete(`${this.baseUrl}/web/mediumtype/${mediumtype.id}`).toPromise();
   }
 }

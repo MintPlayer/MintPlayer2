@@ -16,7 +16,7 @@ export class ArtistService {
         'count': String(count),
         'page': String(page)
       }
-    });
+    }).toPromise();
   }
 
   public getArtist(id: number, include_relations: boolean) {
@@ -24,18 +24,18 @@ export class ArtistService {
       headers: {
         'include_relations': String(include_relations)
       }
-    });
+    }).toPromise();
   }
 
   public createArtist(artist: Artist) {
-    return this.httpClient.post<Artist>(`${this.baseUrl}/web/artist`, { artist });
+    return this.httpClient.post<Artist>(`${this.baseUrl}/web/artist`, { artist }).toPromise();
   }
 
   public updateArtist(artist: Artist) {
-    return this.httpClient.put(`${this.baseUrl}/web/artist/${artist.id}`, { artist });
+    return this.httpClient.put(`${this.baseUrl}/web/artist/${artist.id}`, { artist }).toPromise();
   }
 
   public deleteArtist(artist: Artist) {
-    return this.httpClient.delete(`${this.baseUrl}/web/artist/${artist.id}`);
+    return this.httpClient.delete(`${this.baseUrl}/web/artist/${artist.id}`).toPromise();
   }
 }

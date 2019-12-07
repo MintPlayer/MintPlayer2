@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.Twitter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -106,6 +108,11 @@ namespace MintPlayer.Web
                     options.User.RequireUniqueEmail = true;
                     options.User.AllowedUserNameCharacters = string.Empty;
 
+                }).Configure<RazorViewEngineOptions>(options => {
+                    var new_locations = options.ViewLocationFormats.Select(vlf => $"/Server{vlf}").ToList();
+                    options.ViewLocationFormats.Clear();
+                    foreach (var format in new_locations)
+                        options.ViewLocationFormats.Add(format);
                 })
                 .Configure<JwtIssuerOptions>(options =>
                 {

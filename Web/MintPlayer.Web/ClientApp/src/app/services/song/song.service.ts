@@ -16,7 +16,7 @@ export class SongService {
         'count': String(count),
         'page': String(page)
       }
-    });
+    }).toPromise();
   }
 
   public getSong(id: number, include_relations: boolean) {
@@ -24,18 +24,18 @@ export class SongService {
       headers: {
         'include_relations': String(include_relations)
       }
-    });
+    }).toPromise();
   }
 
   public createSong(song: Song) {
-    return this.httpClient.post<Song>(`${this.baseUrl}/web/song`, { song });
+    return this.httpClient.post<Song>(`${this.baseUrl}/web/song`, { song }).toPromise();
   }
 
   public updateSong(song: Song) {
-    return this.httpClient.put(`${this.baseUrl}/web/song/${song.id}`, { song });
+    return this.httpClient.put(`${this.baseUrl}/web/song/${song.id}`, { song }).toPromise();
   }
 
   public deleteSong(song: Song) {
-    return this.httpClient.delete(`${this.baseUrl}/web/song/${song.id}`);
+    return this.httpClient.delete(`${this.baseUrl}/web/song/${song.id}`).toPromise();
   }
 }

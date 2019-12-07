@@ -20,7 +20,7 @@ export class SubjectLikeComponent implements OnInit {
   @Input() set subject(subject: Subject) {
     this._subject = subject;
     this.loading = true;
-    this.subjectService.getLikes(subject).subscribe((data) => {
+    this.subjectService.getLikes(subject).then((data) => {
       this.data = data;
       this.loading = false;
     });
@@ -34,7 +34,7 @@ export class SubjectLikeComponent implements OnInit {
   };
 
   public like(like: boolean) {
-    this.subjectService.like(this.subject, like).subscribe((data) => {
+    this.subjectService.like(this.subject, like).then((data) => {
       this.data = data;
     });
   }

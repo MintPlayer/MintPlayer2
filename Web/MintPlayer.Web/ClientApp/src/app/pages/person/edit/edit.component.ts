@@ -14,7 +14,7 @@ import { MediumType } from '../../../interfaces/medium-type';
 export class PersonEditComponent implements OnInit {
   constructor(private personService: PersonService, private mediumTypeService: MediumTypeService, private router: Router, private route: ActivatedRoute, private titleService: Title) {
     var id = parseInt(this.route.snapshot.paramMap.get("id"));
-    this.personService.getPerson(id, true).subscribe(person => {
+    this.personService.getPerson(id, true).then(person => {
       this.person = person;
       this.titleService.setTitle(`Edit person: ${person.firstName} ${person.lastName}`);
       this.oldPersonName = person.firstName + " " + person.lastName;
@@ -38,7 +38,7 @@ export class PersonEditComponent implements OnInit {
   mediumTypes: MediumType[] = [];
 
   updatePerson() {
-    this.personService.updatePerson(this.person).subscribe(() => {
+    this.personService.updatePerson(this.person).then(() => {
       this.router.navigate(["person", this.person.id]);
     });
   }

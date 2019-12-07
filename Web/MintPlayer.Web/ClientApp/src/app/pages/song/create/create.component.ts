@@ -52,7 +52,7 @@ export class SongCreateComponent implements OnInit {
 	});
 
 	saveSong() {
-		this.songService.createSong(this.song).subscribe((song) => {
+		this.songService.createSong(this.song).then((song) => {
 			this.router.navigate(["song", song.id]);
 		});
   }

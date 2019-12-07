@@ -15,7 +15,7 @@ import { MediumType } from '../../../interfaces/medium-type';
 export class SongEditComponent implements OnInit {
   constructor(private songService: SongService, private router: Router, private route: ActivatedRoute, private titleService: Title) {
     var id = parseInt(this.route.snapshot.paramMap.get("id"));
-    this.songService.getSong(id, true).subscribe(song => {
+    this.songService.getSong(id, true).then((song) => {
       this.song = song;
       this.titleService.setTitle(`Edit song: ${song.title}`);
       this.oldSongTitle = song.title;
@@ -56,7 +56,7 @@ export class SongEditComponent implements OnInit {
   }
 
   public updateSong() {
-    this.songService.updateSong(this.song).subscribe(() => {
+    this.songService.updateSong(this.song).then(() => {
       this.router.navigate(["song", this.song.id]);
     });
   }

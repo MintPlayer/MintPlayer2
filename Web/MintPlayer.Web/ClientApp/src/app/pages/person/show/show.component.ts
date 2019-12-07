@@ -13,7 +13,7 @@ export class PersonShowComponent implements OnInit {
 
   constructor(private personService: PersonService, private router: Router, private route: ActivatedRoute, private titleService: Title) {
     var id = parseInt(this.route.snapshot.paramMap.get("id"));
-    this.personService.getPerson(id, true).subscribe(person => {
+    this.personService.getPerson(id, true).then((person) => {
       this.person = person;
       if (person != null) {
         this.titleService.setTitle(person.firstName + ' ' + person.lastName);
@@ -22,7 +22,7 @@ export class PersonShowComponent implements OnInit {
   }
 
   public deletePerson() {
-    this.personService.deletePerson(this.person).subscribe(() => {
+    this.personService.deletePerson(this.person).then(() => {
       this.router.navigate(["person"]);
     });
   }
