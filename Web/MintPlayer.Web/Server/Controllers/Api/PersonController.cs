@@ -22,7 +22,7 @@ namespace MintPlayer.Web.Controllers.Api
 		}
 
 		// GET: api/Person
-		[HttpGet]
+		[HttpGet(Name = "api-person-list")]
 		public IEnumerable<Person> Get([FromHeader]bool include_relations = false)
 		{
 			var people = personRepository.GetPeople(include_relations);
@@ -30,7 +30,7 @@ namespace MintPlayer.Web.Controllers.Api
 		}
 
 		// GET: api/Person/5
-		[HttpGet("{id}", Order = 1)]
+		[HttpGet("{id}", Name = "api-person-get", Order = 1)]
 		public Person Get(int id, [FromHeader]bool include_relations = false)
 		{
 			var person = personRepository.GetPerson(id, include_relations);
@@ -38,7 +38,7 @@ namespace MintPlayer.Web.Controllers.Api
 		}
 
 		// POST: api/Person
-		[HttpPost]
+		[HttpPost(Name = "api-person-create")]
 		[Authorize(AuthenticationSchemes = "Bearer")]
 		public async Task<Person> Post([FromBody] PersonCreateVM personCreateVM)
 		{
@@ -48,7 +48,7 @@ namespace MintPlayer.Web.Controllers.Api
 		}
 
 		// PUT: api/Person/5
-		[HttpPut("{id}")]
+		[HttpPut("{id}", Name = "api-person-update")]
 		[Authorize(AuthenticationSchemes = "Bearer")]
 		public async Task Put(int id, [FromBody] PersonUpdateVM personUpdateVM)
 		{
@@ -58,7 +58,7 @@ namespace MintPlayer.Web.Controllers.Api
 		}
 
 		// DELETE: api/ApiWithActions/5
-		[HttpDelete("{id}")]
+		[HttpDelete("{id}", Name = "api-person-delete")]
 		[Authorize(AuthenticationSchemes = "Bearer")]
 		public async Task Delete(int id)
 		{

@@ -20,7 +20,7 @@ namespace MintPlayer.Web.Controllers.Api
 			this.subjectRepository = subjectRepository;
 		}
 
-		[HttpGet("{subject_id}/likes")]
+		[HttpGet("{subject_id}/likes", Name = "api-subject-getlikes")]
 		public async Task<SubjectLikeVM> Likes([FromRoute]int subject_id)
 		{
 			var likes = await subjectRepository.GetLikes(subject_id);
@@ -46,7 +46,7 @@ namespace MintPlayer.Web.Controllers.Api
 		}
 
 		[Authorize(AuthenticationSchemes = "Bearer")]
-		[HttpPost("{subject_id}/likes")]
+		[HttpPost("{subject_id}/likes", Name = "api-subject-like")]
 		public async Task<SubjectLikeVM> Like([FromRoute]int subject_id, [FromBody]bool like)
 		{
 			await subjectRepository.Like(subject_id, like);
@@ -62,7 +62,7 @@ namespace MintPlayer.Web.Controllers.Api
 			};
 		}
 
-		[HttpGet("search/suggest/{subjects_concat}/{search_term}")]
+		[HttpGet("search/suggest/{subjects_concat}/{search_term}", Name = "api-subject-suggest")]
 		public async Task<IEnumerable<Subject>> Suggest([FromRoute]string subjects_concat, [FromRoute]string search_term)
 		{
 			// Still to do:
@@ -84,7 +84,7 @@ namespace MintPlayer.Web.Controllers.Api
 			return results.ToList();
 		}
 
-		[HttpGet("search/{subjects_concat}/{search_term}")]
+		[HttpGet("search/{subjects_concat}/{search_term}", Name = "api-subject-search")]
 		public async Task<SearchResultsVM> Search([FromRoute]string subjects_concat, [FromRoute]string search_term)
 		{
 			var subjects = subjects_concat.Split('-');

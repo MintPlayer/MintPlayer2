@@ -20,7 +20,7 @@ namespace MintPlayer.Web.Controllers.Api
 			this.accountRepository = accountRepository;
 		}
 
-		[HttpPost("register")]
+		[HttpPost("register", Name = "api-account-register")]
 		public async Task<IActionResult> Register([FromBody]UserDataVM userCreateVM)
 		{
 			try
@@ -40,7 +40,7 @@ namespace MintPlayer.Web.Controllers.Api
 			}
 		}
 
-		[HttpPost("login")]
+		[HttpPost("login", Name = "api-account-login")]
 		public async Task<IActionResult> Login([FromBody]LoginVM loginVM)
 		{
 			try
@@ -59,7 +59,7 @@ namespace MintPlayer.Web.Controllers.Api
 		}
 
 		[Authorize(AuthenticationSchemes = "Bearer")]
-		[HttpGet("current-user")]
+		[HttpGet("current-user", Name = "api-account-currentuser")]
 		public async Task<User> GetCurrentUser()
 		{
 			var user = await accountRepository.GetCurrentUser(User);

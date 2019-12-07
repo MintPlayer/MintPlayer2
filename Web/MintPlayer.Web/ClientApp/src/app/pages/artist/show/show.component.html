@@ -68,6 +68,32 @@
       </div>
     </content>
   </card>
+  <card class="d-block mb-3">
+    <header>
+      <i class="fa fa-music"></i>
+      Songs
+    </header>
+    <content>
+      <table class="table table-striped table-hover m-0">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Released</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let song of artist.songs">
+            <td>
+              <a [routerLink]='["/song",song.id]' title="Details for {{ song.title }}">{{ song.title }}</a>
+            </td>
+            <td>
+              {{ song.released | date:'dd-MM-yyyy' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </content>
+  </card>
   <card class="d-block">
     <header>
       <i class="fa fa-medium"></i>

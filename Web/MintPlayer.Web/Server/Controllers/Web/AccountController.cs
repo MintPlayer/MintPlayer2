@@ -12,6 +12,7 @@ using MintPlayer.Web.ViewModels.Account;
 
 namespace MintPlayer.Web.Controllers.Web
 {
+	[Controller]
 	[Route("web/[controller]")]
 	public class AccountController : Controller
 	{
@@ -21,7 +22,7 @@ namespace MintPlayer.Web.Controllers.Web
 			this.accountRepository = accountRepository;
 		}
 
-		[HttpPost("register")]
+		[HttpPost("register", Name = "web-account-register")]
 		public async Task<IActionResult> Register([FromBody]UserDataVM userCreateVM)
 		{
 			try
@@ -41,7 +42,7 @@ namespace MintPlayer.Web.Controllers.Web
 			}
 		}
 
-		[HttpPost("login")]
+		[HttpPost("login", Name = "web-account-login")]
 		public async Task<IActionResult> Login([FromBody]LoginVM loginVM)
 		{
 			try
@@ -60,7 +61,7 @@ namespace MintPlayer.Web.Controllers.Web
 		}
 
 		[AllowAnonymous]
-		[HttpGet("providers")]
+		[HttpGet("providers", Name = "web-account-externalproviders")]
 		public async Task<List<string>> Providers()
 		{
 			var result = await accountRepository.GetExternalLoginProviders();
@@ -68,7 +69,7 @@ namespace MintPlayer.Web.Controllers.Web
 		}
 
 		[AllowAnonymous]
-		[HttpGet("connect/{provider}")]
+		[HttpGet("connect/{provider}", Name = "web-account-externallogin")]
 		public async Task<ActionResult> ExternalLogin(string provider)
 		{
 			var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new { provider });
@@ -76,7 +77,7 @@ namespace MintPlayer.Web.Controllers.Web
 			return Challenge(properties, provider);
 		}
 
-		[HttpGet("connect/{provider}/callback")]
+		[HttpGet("connect/{provider}/callback", Name = "web-account-externallogincallback")]
 		public async Task<ActionResult> ExternalLoginCallback([FromRoute]string provider)
 		{
 			var model = new LoginResultVM();
@@ -124,7 +125,7 @@ namespace MintPlayer.Web.Controllers.Web
 		}
 
 		[Authorize]
-		[HttpGet("logins")]
+		[HttpGet("logins", Name = "web-account-externallogins")]
 		public async Task<List<string>> GetExternalLogins()
 		{
 			var logins = await accountRepository.GetExternalLogins(User);
@@ -132,7 +133,7 @@ namespace MintPlayer.Web.Controllers.Web
 		}
 
 		[Authorize]
-		[HttpGet("add/{provider}")]
+		[HttpGet("add/{provider}", Name = "web-account-addexternallogin")]
 		public async Task<ActionResult> AddExternalLogin(string provider)
 		{
 			var redirectUrl = Url.Action(nameof(AddExternalLoginCallback), "Account", new { provider });
@@ -141,7 +142,7 @@ namespace MintPlayer.Web.Controllers.Web
 		}
 
 		[Authorize]
-		[HttpGet("add/{provider}/callback")]
+		[HttpGet("add/{provider}/callback", Name = "web-account-addexternallogincallback")]
 		public async Task<ActionResult> AddExternalLoginCallback([FromRoute]string provider)
 		{
 			var model = new LoginResultVM();
@@ -167,7 +168,7 @@ namespace MintPlayer.Web.Controllers.Web
 		}
 
 		[Authorize]
-		[HttpDelete("logins/{provider}")]
+		[HttpDelete("logins/{provider}", Name = "web-account-removeexternallogin")]
 		public async Task<IActionResult> DeleteLogin(string provider)
 		{
 			await accountRepository.RemoveExternalLogin(User, provider);
@@ -175,7 +176,7 @@ namespace MintPlayer.Web.Controllers.Web
 		}
 
 		[Authorize]
-		[HttpGet("current-user")]
+		[HttpGet("current-user", Name = "web-account-currentuser")]
 		public async Task<User> GetCurrentUser()
 		{
 			var user = await accountRepository.GetCurrentUser(User);
@@ -183,7 +184,7 @@ namespace MintPlayer.Web.Controllers.Web
 		}
 
 		[Authorize]
-		[HttpPost("logout")]
+		[HttpPost("logout", Name = "web-account-logout")]
 		public async Task<IActionResult> Logoout()
 		{
 			await accountRepository.Logout();

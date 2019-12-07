@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MintPlayer.Data.Extensions;
 using MintPlayer.Data.Options;
+using SitemapXml;
 
 namespace MintPlayer.Web
 {
@@ -29,49 +30,51 @@ namespace MintPlayer.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMintPlayer(options => {
-                options.ConnectionString = @"Server=(localdb)\mssqllocaldb;Database=MintPlayer;Trusted_Connection=True;ConnectRetryCount=0";
-                options.JwtIssuerOptions = new Data.Options.JwtIssuerOptions
-                {
-                    Issuer = Configuration["JwtIssuerOptions:Issuer"],
-                    Audience = Configuration["JwtIssuerOptions:Audience"],
-                    Subject = Configuration["JwtIssuerOptions:Subject"],
-                    ValidFor = Configuration.GetValue<TimeSpan>("JwtIssuerOptions:ValidFor"),
-                    Key = Configuration["JwtIssuerOptions:Key"],
-                };
-                options.FacebookOptions = new FacebookOptions
-                {
-                    AppId = Configuration["FacebookOptions:AppId"],
-                    AppSecret = Configuration["FacebookOptions:AppSecret"]
-                };
-                options.MicrosoftOptions = new MicrosoftAccountOptions
-                {
-                    ClientId = Configuration["MicrosoftOptions:AppId"],
-                    ClientSecret = Configuration["MicrosoftOptions:AppSecret"]
-                };
-                options.GoogleOptions = new GoogleOptions
-                {
-                    ClientId = Configuration["GoogleOptions:AppId"],
-                    ClientSecret = Configuration["GoogleOptions:AppSecret"]
-                };
-                options.TwitterOptions = new TwitterOptions
-                {
-                    ConsumerKey = Configuration["TwitterOptions:ApiKey"],
-                    ConsumerSecret = Configuration["TwitterOptions:ApiSecret"]
-                };
-            });
-
-            services.AddElasticSearch(options => {
-                options.Url = Configuration["elasticsearch:url"];
-                options.DefaultIndex = Configuration["elasticsearch:index"];
-            });
-
             services
+                .AddMintPlayer(options => {
+                    options.ConnectionString = @"Server=(localdb)\mssqllocaldb;Database=MintPlayer;Trusted_Connection=True;ConnectRetryCount=0";
+                    options.JwtIssuerOptions = new Data.Options.JwtIssuerOptions
+                    {
+                        Issuer = Configuration["JwtIssuerOptions:Issuer"],
+                        Audience = Configuration["JwtIssuerOptions:Audience"],
+                        Subject = Configuration["JwtIssuerOptions:Subject"],
+                        ValidFor = Configuration.GetValue<TimeSpan>("JwtIssuerOptions:ValidFor"),
+                        Key = Configuration["JwtIssuerOptions:Key"],
+                    };
+                    options.FacebookOptions = new FacebookOptions
+                    {
+                        AppId = Configuration["FacebookOptions:AppId"],
+                        AppSecret = Configuration["FacebookOptions:AppSecret"]
+                    };
+                    options.MicrosoftOptions = new MicrosoftAccountOptions
+                    {
+                        ClientId = Configuration["MicrosoftOptions:AppId"],
+                        ClientSecret = Configuration["MicrosoftOptions:AppSecret"]
+                    };
+                    options.GoogleOptions = new GoogleOptions
+                    {
+                        ClientId = Configuration["GoogleOptions:AppId"],
+                        ClientSecret = Configuration["GoogleOptions:AppSecret"]
+                    };
+                    options.TwitterOptions = new TwitterOptions
+                    {
+                        ConsumerKey = Configuration["TwitterOptions:ApiKey"],
+                        ConsumerSecret = Configuration["TwitterOptions:ApiSecret"]
+                    };
+                })
+                .AddSitemapXml()
+                .AddElasticSearch(options => {
+                    options.Url = Configuration["elasticsearch:url"];
+                    options.DefaultIndex = Configuration["elasticsearch:index"];
+                })
                 .AddControllersWithViews(options =>
                 {
                     options.RespectBrowserAcceptHeader = true;
                 })
                 .AddXmlSerializerFormatters()
+                .AddSitemapXmlFormatters(options => {
+                    options.StylesheetUrl = "/assets/sitemap.xsl";
+                })
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
@@ -155,6 +158,10 @@ namespace MintPlayer.Web
             }
 
             app
+                .UseDefaultSitemapXmlStylesheet(options =>
+                {
+                    options.StylesheetUrl = "/assets/sitemap.xsl";
+                })
                 .UseAuthentication()
                 .UseRouting()
                 .UseAuthorization()

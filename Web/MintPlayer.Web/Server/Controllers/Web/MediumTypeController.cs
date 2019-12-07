@@ -21,7 +21,7 @@ namespace MintPlayer.Web.Controllers.Web
 		}
 
 		// GET: api/MediumType
-		[HttpGet]
+		[HttpGet(Name = "web-mediumtype-list")]
 		public IEnumerable<MediumType> Get([FromHeader]bool include_relations = false)
 		{
 			var medium_types = mediumTypeRepository.GetMediumTypes();
@@ -29,7 +29,7 @@ namespace MintPlayer.Web.Controllers.Web
 		}
 
 		// GET: api/MediumType/5
-		[HttpGet("{id}")]
+		[HttpGet("{id}", Name = "web-mediumtype-get")]
 		public MediumType Get(int id, [FromHeader]bool include_relations = false)
 		{
 			var medium_type = mediumTypeRepository.GetMediumType(id, include_relations);
@@ -37,7 +37,7 @@ namespace MintPlayer.Web.Controllers.Web
 		}
 
 		// POST: api/MediumType
-		[HttpPost]
+		[HttpPost(Name = "web-mediumtype-create")]
 		[Authorize]
 		public async Task<MediumType> Post([FromBody]MediumTypeCreateVM mediumTypeCreateVM)
 		{
@@ -46,7 +46,7 @@ namespace MintPlayer.Web.Controllers.Web
 		}
 
 		// PUT: api/MediumType/5
-		[HttpPut("{id}")]
+		[HttpPut("{id}", Name = "web-mediumtype-update")]
 		[Authorize]
 		public async Task Put(int id, [FromBody]MediumTypeUpdateVM mediumTypeUpdateVM)
 		{
@@ -55,7 +55,7 @@ namespace MintPlayer.Web.Controllers.Web
 		}
 
 		// DELETE: api/MediumType/5
-		[HttpDelete("{id}")]
+		[HttpDelete("{id}", Name = "web-mediumtype-delete")]
 		[Authorize]
 		public async Task Delete(int id)
 		{

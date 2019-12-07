@@ -22,21 +22,21 @@ namespace MintPlayer.Web.Controllers.Web
 		}
 
 		// GET: api/Song
-		[HttpGet]
+		[HttpGet(Name = "web-song-list")]
 		public IEnumerable<Song> Get([FromHeader]bool include_relations = false)
 		{
 			var songs = songRepository.GetSongs(include_relations);
 			return songs.ToList();
 		}
 		// GET: api/Song/5
-		[HttpGet("{id}", Order = 1)]
+		[HttpGet("{id}", Name = "web-song-get", Order = 1)]
 		public Song Get(int id, [FromHeader]bool include_relations = false)
 		{
 			var song = songRepository.GetSong(id, include_relations);
 			return song;
 		}
 		// POST: api/Song
-		[HttpPost]
+		[HttpPost(Name = "web-song-create")]
 		[Authorize]
 		public async Task<Song> Post([FromBody] SongCreateVM songCreateVM)
 		{
@@ -45,7 +45,7 @@ namespace MintPlayer.Web.Controllers.Web
 			return song;
 		}
 		// PUT: api/Song/5
-		[HttpPut("{id}")]
+		[HttpPut("{id}", Name = "web-song-update")]
 		[Authorize]
 		public async Task Put(int id, [FromBody] SongUpdateVM songUpdateVM)
 		{
@@ -54,7 +54,7 @@ namespace MintPlayer.Web.Controllers.Web
 			await songRepository.SaveChangesAsync();
 		}
 		// DELETE: api/ApiWithActions/5
-		[HttpDelete("{id}")]
+		[HttpDelete("{id}", Name = "web-song-delete")]
 		[Authorize]
 		public async Task Delete(int id)
 		{

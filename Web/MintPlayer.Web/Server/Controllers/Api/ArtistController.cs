@@ -23,7 +23,7 @@ namespace MintPlayer.Web.Controllers.Api
 		}
 
 		// GET: api/Artist
-		[HttpGet]
+		[HttpGet(Name = "api-artist-list")]
 		public IEnumerable<Artist> Get([FromHeader]bool include_relations = false)
 		{
 			var artists = artistRepository.GetArtists(include_relations);
@@ -31,7 +31,7 @@ namespace MintPlayer.Web.Controllers.Api
 		}
 
 		// GET: api/Artist/5
-		[HttpGet("{id}", Order = 1)]
+		[HttpGet("{id}", Name = "api-artist-get", Order = 1)]
 		public Artist Get(int id, [FromHeader]bool include_relations = false)
 		{
 			var artist = artistRepository.GetArtist(id, include_relations);
@@ -39,7 +39,7 @@ namespace MintPlayer.Web.Controllers.Api
 		}
 
 		// POST: api/Artist
-		[HttpPost]
+		[HttpPost(Name = "api-artist-create")]
 		[Authorize(AuthenticationSchemes = "Bearer")]
 		public async Task<Artist> Post([FromBody] ArtistCreateVM artistCreateVM)
 		{
@@ -49,7 +49,7 @@ namespace MintPlayer.Web.Controllers.Api
 		}
 
 		// PUT: api/Artist/5
-		[HttpPut("{id}")]
+		[HttpPut("{id}", Name = "api-artist-update")]
 		[Authorize(AuthenticationSchemes = "Bearer")]
 		public async Task Put(int id, [FromBody] ArtistUpdateVM artistUpdateVM)
 		{
@@ -59,7 +59,7 @@ namespace MintPlayer.Web.Controllers.Api
 		}
 
 		// DELETE: api/ApiWithActions/5
-		[HttpDelete("{id}")]
+		[HttpDelete("{id}", Name = "api-artist-delete")]
 		[Authorize(AuthenticationSchemes = "Bearer")]
 		public async Task Delete(int id)
 		{

@@ -1,7 +1,8 @@
 ﻿using Nest;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using SitemapXml.Interfaces;
 
 namespace MintPlayer.Data.Dtos
 {

@@ -14,7 +14,7 @@ namespace MintPlayer.Data.Dtos
         public DateTime Released { get; set; }
         public string Lyrics { get; set; }
 
-        public string Text => Title;
+		public string Text => Title;
 		public string YoutubeId
 		{
 			get
@@ -36,7 +36,6 @@ namespace MintPlayer.Data.Dtos
 				else return null;
 			}
 		}
-
 		public string Description
 		{
 			get

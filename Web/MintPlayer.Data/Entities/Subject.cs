@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,5 +17,8 @@ namespace MintPlayer.Data.Entities
 		public User UserInsert { get; set; }
 		public User UserUpdate { get; set; }
 		public User UserDelete { get; set; }
+		public DateTime InsertedAt { get; set; }
+		public DateTime? UpdatedAt { get; set; }
+		public DateTime? DeletedAt { get; set; }
 	}
 }

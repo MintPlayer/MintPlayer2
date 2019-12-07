@@ -80,6 +80,7 @@ namespace MintPlayer.Data.Repositories
             // Get current user
             var user = await user_manager.GetUserAsync(http_context.HttpContext.User);
             entity_artist.UserInsert = user;
+            entity_artist.InsertedAt = DateTime.Now;
 
             // Add to database
             mintplayer_context.Artists.Add(entity_artist);
@@ -104,6 +105,7 @@ namespace MintPlayer.Data.Repositories
             artist_entity.Name = artist.Name;
             artist_entity.YearStarted = artist.YearStarted;
             artist_entity.YearQuit = artist.YearQuit;
+            artist_entity.UpdatedAt = DateTime.Now;
 
             IEnumerable<Entities.ArtistPerson> to_add, to_remove, to_update;
             artist_helper.CalculateUpdatedMembers(artist_entity, artist, mintplayer_context, out to_add, out to_update, out to_remove);
@@ -133,6 +135,7 @@ namespace MintPlayer.Data.Repositories
             // Get current user
             var user = await user_manager.GetUserAsync(http_context.HttpContext.User);
             artist.UserDelete = user;
+            artist.DeletedAt = DateTime.Now;
 
             // Index
             var deleted_artist = ToDto(artist);
@@ -157,6 +160,8 @@ namespace MintPlayer.Data.Repositories
                     YearStarted = artist.YearStarted,
                     YearQuit = artist.YearQuit,
 
+                    DateUpdate = artist.UpdatedAt ?? artist.InsertedAt,
+
                     PastMembers = artist.Members.Where(ap => !ap.Active).Select(ap => PersonRepository.ToDto(ap.Person)).ToList(),
                     CurrentMembers = artist.Members.Where(ap => ap.Active).Select(ap => PersonRepository.ToDto(ap.Person)).ToList(),
                     Songs = artist.Songs.Select(@as => SongRepository.ToDto(@as.Song)).ToList(),
@@ -170,7 +175,9 @@ namespace MintPlayer.Data.Repositories
                     Id = artist.Id,
                     Name = artist.Name,
                     YearStarted = artist.YearStarted,
-                    YearQuit = artist.YearQuit
+                    YearQuit = artist.YearQuit,
+
+                    DateUpdate = artist.UpdatedAt ?? artist.InsertedAt,
                 };
             }
         }

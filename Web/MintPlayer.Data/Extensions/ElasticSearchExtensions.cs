@@ -10,7 +10,7 @@ namespace MintPlayer.Data.Extensions
 {
     public static class ElasticSearchExtensions
 	{
-		public static void AddElasticSearch(this IServiceCollection services, Action<ElasticSearchOptions> options)
+		public static IServiceCollection AddElasticSearch(this IServiceCollection services, Action<ElasticSearchOptions> options)
 		{
 			var opt = new ElasticSearchOptions();
 			options.Invoke(opt);
@@ -65,7 +65,7 @@ namespace MintPlayer.Data.Extensions
 				)
 			);
 
-			services.AddSingleton<IElasticClient>(client);
+			return services.AddSingleton<IElasticClient>(client);
 		}
 	}
 }

@@ -6,6 +6,7 @@ using MintPlayer.Data.Repositories.Interfaces;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System;
 
 namespace MintPlayer.Data.Repositories
 {
@@ -71,6 +72,7 @@ namespace MintPlayer.Data.Repositories
 			// Get current user
 			var user = await user_manager.GetUserAsync(http_context.HttpContext.User);
 			entity_person.UserInsert = user;
+			entity_person.InsertedAt = DateTime.Now;
 
 			// Add to database
 			mintplayer_context.People.Add(entity_person);
@@ -97,6 +99,7 @@ namespace MintPlayer.Data.Repositories
 			// Get current user
 			var user = await user_manager.GetUserAsync(http_context.HttpContext.User);
 			entity_person.UserUpdate = user;
+			entity_person.UpdatedAt = DateTime.Now;
 
 			// Update in database
 			mintplayer_context.Entry(entity_person).State = EntityState.Modified;
@@ -116,6 +119,7 @@ namespace MintPlayer.Data.Repositories
 			// Get current user
 			var user = await user_manager.GetUserAsync(http_context.HttpContext.User);
 			person.UserDelete = user;
+			person.DeletedAt = DateTime.Now;
 
 			// Index
 			var deleted_person = ToDto(person);
@@ -141,6 +145,8 @@ namespace MintPlayer.Data.Repositories
 					Born = person.Born,
 					Died = person.Died,
 
+					DateUpdate = person.UpdatedAt ?? person.InsertedAt,
+
 					Artists = person.Artists.Select(ap => ArtistRepository.ToDto(ap.Artist)).ToList(),
 					Media = person.Media.Select(medium => MediumRepository.ToDto(medium, true)).ToList()
 				};
@@ -153,7 +159,9 @@ namespace MintPlayer.Data.Repositories
 					FirstName = person.FirstName,
 					LastName = person.LastName,
 					Born = person.Born,
-					Died = person.Died
+					Died = person.Died,
+
+					DateUpdate = person.UpdatedAt ?? person.InsertedAt,
 				};
 			}
 		}
