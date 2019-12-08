@@ -44,7 +44,7 @@ namespace MintPlayer.Web.Server.Controllers.Web
 
         [Produces("application/xml")]
         [HttpGet("{subject}/{count}/{page}", Name = "web-sitemap-sitemap")]
-        public UrlSet Sitemap(string subject, int count, int page)
+        public IActionResult Sitemap(string subject, int count, int page)
         {
             IEnumerable<Data.Dtos.Subject> subjects;
             switch (subject.ToLower())
@@ -59,11 +59,10 @@ namespace MintPlayer.Web.Server.Controllers.Web
                     subjects = songRepository.GetSongs().Skip((page - 1) * count).Take(count);
                     break;
                 default:
-                    //return NotFound();
-                    return null;
+                    return NotFound();
             }
 
-            return new UrlSet(subjects.Select(p => {
+            return Ok(new UrlSet(subjects.Select(p => {
                 var url = new Url
                 {
                     Loc = $"{Request.Scheme}://{Request.Host}/{subject}/{p.Id}",
@@ -83,7 +82,7 @@ namespace MintPlayer.Web.Server.Controllers.Web
                     Href = $"{Request.Scheme}://{Request.Host}/{subject}/{p.Id}?lang=fr"
                 });
                 return url;
-            }));
+            })));
         }
     }
 }
