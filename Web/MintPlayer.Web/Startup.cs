@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using MintPlayer.Data.Extensions;
 using MintPlayer.Data.Options;
 using SitemapXml;
+using Spa.SpaRoutes;
 
 namespace MintPlayer.Web
 {
@@ -86,6 +87,11 @@ namespace MintPlayer.Web
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            //services.AddSpaRoutes(routes => routes
+            //    .Route("", "home")
+            //    .Route("search", "search")
+            //);
 
             services
                 .Configure<ForwardedHeadersOptions>(options =>

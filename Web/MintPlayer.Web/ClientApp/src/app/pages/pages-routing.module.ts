@@ -7,6 +7,7 @@ import { SearchComponent } from './search/search.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'search', component: SearchComponent, pathMatch: 'full' },
+  { path: 'search/:term', component: SearchComponent },
   { path: 'account', loadChildren: './account/account.module#AccountModule' },
   { path: 'person', loadChildren: './person/person.module#PersonModule' },
   { path: 'artist', loadChildren: './artist/artist.module#ArtistModule' },
