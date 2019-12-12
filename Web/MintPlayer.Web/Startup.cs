@@ -91,33 +91,42 @@ namespace MintPlayer.Web
                 configuration.RootPath = "ClientApp/dist";
             });
 
+            services.AddOpenSearch<Services.OpenSearchService>();
+            
             services.AddSpaRoutes(routes => routes
                 .Route("", "home")
-                .Route("search", "search")
+                .Group("search", "search", search_routes => search_routes
+                    .Route("", "search")
+                    .Route("{term}", "results")
+                )
+                .Group("person", "person", person_routes => person_routes
+                    .Route("", "list")
+                    .Route("create", "create")
+                    .Route("{id}", "show")
+                    .Route("{id}/edit", "edit")
+                )
+                .Group("artist", "artist", artist_routes => artist_routes
+                     .Route("", "list")
+                     .Route("create", "create")
+                     .Route("{id}", "show")
+                     .Route("{id}/edit", "edit")
+                )
+                .Group("song", "artist", song_routes => song_routes
+                     .Route("", "list")
+                     .Route("create", "create")
+                     .Route("{id}", "show")
+                     .Route("{id}/edit", "edit")
+                )
+                .Group("medium-type", "mediumtype", mediumtype_routes => mediumtype_routes
+                     .Route("", "list")
+                     .Route("create", "create")
+                     .Route("{id}", "show")
+                     .Route("{id}/edit", "edit")
+                )
                 .Group("account", "account", account_routes => account_routes
                     .Route("login", "login")
                     .Route("register", "register")
                     .Route("profile", "profile")
-                ).Group("person", "person", person_routes => person_routes
-                    .Route("", "list")
-                    .Route("create", "create")
-                    .Route("{id}", "show")
-                    .Route("{id}/edit", "edit")
-                ).Group("artist", "artist", artist_routes => artist_routes
-                    .Route("", "list")
-                    .Route("create", "create")
-                    .Route("{id}", "show")
-                    .Route("{id}/edit", "edit")
-                ).Group("song", "song", song_routes => song_routes
-                    .Route("", "list")
-                    .Route("create", "create")
-                    .Route("{id}", "show")
-                    .Route("{id}/edit", "edit")
-                ).Group("medium-type", "mediumtype", medium_type_routes => medium_type_routes
-                    .Route("", "list")
-                    .Route("create", "create")
-                    .Route("{id}", "show")
-                    .Route("{id}/edit", "edit")
                 )
             );
 
@@ -192,10 +201,6 @@ namespace MintPlayer.Web
             }
 
             app
-                .UseDefaultSitemapXmlStylesheet(options =>
-                {
-                    options.StylesheetUrl = "/assets/sitemap.xsl";
-                })
                 .UseOpenSearch(options =>
                 {
                     options.OsdxEndpoint = "/opensearch.xml";
@@ -205,6 +210,10 @@ namespace MintPlayer.Web
                     options.ShortName = "MintPlayer";
                     options.Description = "Search music on MintPlayer";
                     options.Contact = "pieterjandeclippel@msn.com";
+                })
+                .UseDefaultSitemapXmlStylesheet(options =>
+                {
+                    options.StylesheetUrl = "/assets/sitemap.xsl";
                 })
                 .UseAuthentication()
                 .UseRouting()
