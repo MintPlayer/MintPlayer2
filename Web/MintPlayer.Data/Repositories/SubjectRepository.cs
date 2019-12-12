@@ -150,14 +150,14 @@ namespace MintPlayer.Data.Repositories
 			return person_options.Union(artist_options).Union(song_options).ToList();
 		}
 
-		public async Task<List<Subject>> Search(string[] subjects, string search_term)
+		public async Task<List<Subject>> Search(string[] subjects, string search_term, bool exact)
 		{
 			IEnumerable<Subject> person_results = new Person[0], artist_results = new Artist[0], song_results = new Song[0];
 			if (subjects.Contains("person"))
 			{
 				var people = await elastic_client.SearchAsync<Person>(
 					a => a.Query(q1 => q1.MultiMatch(
-						mm => mm.Query(search_term).Fields(m => m.Fields(f => f.FirstName, f => f.LastName)).Fuzziness(Fuzziness.Auto)
+						mm => mm.Query(search_term).Fields(m => m.Fields(f => f.FirstName, f => f.LastName)).Fuzziness(exact ? Fuzziness.EditDistance(0) : Fuzziness.Auto)
 					))
 				);
 				person_results = people.Documents.Cast<Subject>();
@@ -166,7 +166,7 @@ namespace MintPlayer.Data.Repositories
 			{
 				var artists = await elastic_client.SearchAsync<Artist>(
 					a => a.Query(q1 => q1.MultiMatch(
-						mm => mm.Query(search_term).Fields(m => m.Fields(f => f.Name)).Fuzziness(Nest.Fuzziness.EditDistance(2)).PrefixLength(1)
+						mm => mm.Query(search_term).Fields(m => m.Fields(f => f.Name)).Fuzziness(exact ? Fuzziness.EditDistance(0) : Fuzziness.Auto).PrefixLength(1)
 					))
 				);
 				artist_results = artists.Documents.Cast<Subject>();
@@ -175,7 +175,7 @@ namespace MintPlayer.Data.Repositories
 			{
 				var songs = await elastic_client.SearchAsync<Song>(
 					a => a.Query(q1 => q1.MultiMatch(
-						mm => mm.Query(search_term).Fields(m => m.Fields(f => f.Title)).Fuzziness(Nest.Fuzziness.EditDistance(2)).PrefixLength(1)
+						mm => mm.Query(search_term).Fields(m => m.Fields(f => f.Title)).Fuzziness(exact ? Fuzziness.EditDistance(0) : Fuzziness.Auto).PrefixLength(1)
 					))
 				);
 				song_results = songs.Documents.Cast<Subject>();
@@ -187,5 +187,30 @@ namespace MintPlayer.Data.Repositories
 		{
 			await mintplayer_context.SaveChangesAsync();
 		}
+
+		#region Conversion methods
+		internal static Subject ToDto(Entities.Subject subject, bool include_relations = false)
+		{
+			if (subject == null) return null;
+
+			var subject_type = subject.GetType();
+			if (subject_type == typeof(Entities.Person))
+			{
+				return PersonRepository.ToDto((Entities.Person)subject, include_relations);
+			}
+			else if (subject_type == typeof(Entities.Artist))
+			{
+				return ArtistRepository.ToDto((Entities.Artist)subject, include_relations);
+			}
+			else if (subject_type == typeof(Entities.Song))
+			{
+				return SongRepository.ToDto((Entities.Song)subject, include_relations);
+			}
+			else
+			{
+				throw new ArgumentException("The subject type was not recognized", nameof(subject));
+			}
+		}
+		#endregion
 	}
 }

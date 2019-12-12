@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using AspNetCoreOpenSearch.Extensions;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
@@ -15,6 +16,8 @@ using Microsoft.Extensions.Hosting;
 using MintPlayer.Data.Extensions;
 using MintPlayer.Data.Options;
 using SitemapXml;
+using Spa.SpaRoutes;
+using Spa.SpaRoutes.CurrentSpaRoute;
 
 namespace MintPlayer.Web
 {
@@ -67,6 +70,7 @@ namespace MintPlayer.Web
                     options.Url = Configuration["elasticsearch:url"];
                     options.DefaultIndex = Configuration["elasticsearch:index"];
                 })
+                .AddHostedService<Server.Services.ElasticSearchIndexingService>()
                 .AddControllersWithViews(options =>
                 {
                     options.RespectBrowserAcceptHeader = true;
@@ -86,6 +90,36 @@ namespace MintPlayer.Web
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddSpaRoutes(routes => routes
+                .Route("", "home")
+                .Route("search", "search")
+                .Group("account", "account", account_routes => account_routes
+                    .Route("login", "login")
+                    .Route("register", "register")
+                    .Route("profile", "profile")
+                ).Group("person", "person", person_routes => person_routes
+                    .Route("", "list")
+                    .Route("create", "create")
+                    .Route("{id}", "show")
+                    .Route("{id}/edit", "edit")
+                ).Group("artist", "artist", artist_routes => artist_routes
+                    .Route("", "list")
+                    .Route("create", "create")
+                    .Route("{id}", "show")
+                    .Route("{id}/edit", "edit")
+                ).Group("song", "song", song_routes => song_routes
+                    .Route("", "list")
+                    .Route("create", "create")
+                    .Route("{id}", "show")
+                    .Route("{id}/edit", "edit")
+                ).Group("medium-type", "mediumtype", medium_type_routes => medium_type_routes
+                    .Route("", "list")
+                    .Route("create", "create")
+                    .Route("{id}", "show")
+                    .Route("{id}/edit", "edit")
+                )
+            );
 
             services
                 .Configure<ForwardedHeadersOptions>(options =>
@@ -161,6 +195,16 @@ namespace MintPlayer.Web
                 .UseDefaultSitemapXmlStylesheet(options =>
                 {
                     options.StylesheetUrl = "/assets/sitemap.xsl";
+                })
+                .UseOpenSearch(options =>
+                {
+                    options.OsdxEndpoint = "/opensearch.xml";
+                    options.SearchUrl = "/web/OpenSearch/redirect/{searchTerms}";
+                    options.SuggestUrl = "/web/OpenSearch/suggest/{searchTerms}";
+                    options.ImageUrl = "/assets/logo/music_note_16.png";
+                    options.ShortName = "MintPlayer";
+                    options.Description = "Search music on MintPlayer";
+                    options.Contact = "pieterjandeclippel@msn.com";
                 })
                 .UseAuthentication()
                 .UseRouting()

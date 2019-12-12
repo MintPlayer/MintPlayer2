@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { SearchComponent } from './search/search.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 
 const routes: Routes = [
@@ -11,7 +12,8 @@ const routes: Routes = [
   { path: 'person', loadChildren: './person/person.module#PersonModule' },
   { path: 'artist', loadChildren: './artist/artist.module#ArtistModule' },
   { path: 'song', loadChildren: './song/song.module#SongModule' },
-  { path: 'medium-type', loadChildren: './medium-type/medium-type.module#MediumTypeModule' }
+  { path: 'medium-type', loadChildren: './medium-type/medium-type.module#MediumTypeModule' },
+  { path: '**', component: NotFoundComponent }
 ];
 
 @NgModule({

@@ -13,7 +13,7 @@ namespace MintPlayer.Data.Dtos
 		public DateTime? Born { get; set; }
 		public DateTime? Died { get; set; }
 
-		public string Text => $"{FirstName} {LastName}";
+		public override string Text => $"{FirstName} {LastName}";
 
 		public List<Artist> Artists { get; set; }
 

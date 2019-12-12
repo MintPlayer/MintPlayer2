@@ -45,6 +45,7 @@ namespace MintPlayer.Web.Controllers.Api
 		{
 			var artist = await artistRepository.InsertArtist(artistCreateVM.Artist);
 			await mediumRepository.StoreMedia(artistCreateVM.Artist, artistCreateVM.Artist.Media);
+			await artistRepository.SaveChangesAsync();
 			return artist;
 		}
 

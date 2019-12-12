@@ -99,7 +99,7 @@ namespace MintPlayer.Web.Controllers.Web
 			else
 				subjects = subjects.Intersect(valid_subjects).ToArray();
 
-			var results = await subjectRepository.Search(subjects, search_term);
+			var results = await subjectRepository.Search(subjects, search_term, false);
 			return new SearchResultsVM
 			{
 				Artists = results.Where(s => s.GetType() == typeof(Artist)).Cast<Artist>().ToList(),

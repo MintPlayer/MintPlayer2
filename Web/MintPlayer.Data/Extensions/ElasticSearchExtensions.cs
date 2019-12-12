@@ -34,7 +34,6 @@ namespace MintPlayer.Data.Extensions
 				);
 
 			var client = new ElasticClient(conn_settings);
-
 			var response_people = client.Indices.Create("person", index => index
 				.Map<Person>(map => map
 					.Properties(props => props

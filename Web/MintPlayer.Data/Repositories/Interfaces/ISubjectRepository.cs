@@ -12,7 +12,7 @@ namespace MintPlayer.Data.Repositories.Interfaces
         Task Like(int subjectId, bool like);
 
         Task<List<Subject>> Suggest(string[] subjects, string search_term);
-        Task<List<Subject>> Search(string[] subjects, string search_term);
+        Task<List<Subject>> Search(string[] subjects, string search_term, bool exact);
 
         Task SaveChangesAsync();
     }

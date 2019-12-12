@@ -10,7 +10,7 @@ namespace MintPlayer.Data.Dtos
 		public int? YearStarted { get; set; }
 		public int? YearQuit { get; set; }
 
-		public string Text => Name;
+		public override string Text => Name;
 
 		public List<Person> PastMembers { get; set; }
 		public List<Person> CurrentMembers { get; set; }

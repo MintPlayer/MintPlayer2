@@ -18,14 +18,14 @@ namespace MintPlayer.Data.Repositories
         private MintPlayerContext mintplayer_context;
         private UserManager<Entities.User> user_manager;
         private ArtistHelper artist_helper;
-        private Nest.IElasticClient elastic_client;
-        public ArtistRepository(IHttpContextAccessor http_context, MintPlayerContext mintplayer_context, UserManager<Entities.User> user_manager, ArtistHelper artist_helper, Nest.IElasticClient elastic_client)
+        private Jobs.Interfaces.IElasticSearchJobRepository elasticSearchJobRepository;
+        public ArtistRepository(IHttpContextAccessor http_context, MintPlayerContext mintplayer_context, UserManager<Entities.User> user_manager, ArtistHelper artist_helper, Jobs.Interfaces.IElasticSearchJobRepository elasticSearchJobRepository)
         {
             this.http_context = http_context;
             this.mintplayer_context = mintplayer_context;
             this.user_manager = user_manager;
             this.artist_helper = artist_helper;
-            this.elastic_client = elastic_client;
+            this.elasticSearchJobRepository = elasticSearchJobRepository;
         }
 
         public IEnumerable<Artist> GetArtists(bool include_relations = false)
@@ -88,7 +88,13 @@ namespace MintPlayer.Data.Repositories
 
             // Index
             var new_artist = ToDto(entity_artist);
-            var index_status = await elastic_client.IndexDocumentAsync(new_artist);
+            //var index_status = await elastic_client.IndexDocumentAsync(new_artist);
+            var job = await elasticSearchJobRepository.InsertElasticSearchIndexJob(new Dtos.Jobs.ElasticSearchIndexJob
+            {
+                Subject = new_artist,
+                SubjectStatus = Enums.eSubjectAction.Added,
+                JobStatus = Enums.eJobStatus.Queued
+            });
 
             return new_artist;
         }
@@ -122,7 +128,13 @@ namespace MintPlayer.Data.Repositories
 
             // Index
             var updated_artist = ToDto(artist_entity);
-            await elastic_client.UpdateAsync<Artist>(updated_artist, u => u.Doc(updated_artist));
+            //await elastic_client.UpdateAsync<Artist>(updated_artist, u => u.Doc(updated_artist));
+            var job = await elasticSearchJobRepository.InsertElasticSearchIndexJob(new Dtos.Jobs.ElasticSearchIndexJob
+            {
+                Subject = updated_artist,
+                SubjectStatus = Enums.eSubjectAction.Updated,
+                JobStatus = Enums.eJobStatus.Queued
+            });
 
             return updated_artist;
         }
@@ -139,7 +151,13 @@ namespace MintPlayer.Data.Repositories
 
             // Index
             var deleted_artist = ToDto(artist);
-            await elastic_client.DeleteAsync<Artist>(deleted_artist);
+            //await elastic_client.DeleteAsync<Artist>(deleted_artist);
+            var job = await elasticSearchJobRepository.InsertElasticSearchIndexJob(new Dtos.Jobs.ElasticSearchIndexJob
+            {
+                Subject = deleted_artist,
+                SubjectStatus = Enums.eSubjectAction.Deleted,
+                JobStatus = Enums.eJobStatus.Queued
+            });
         }
 
         public async Task SaveChangesAsync()

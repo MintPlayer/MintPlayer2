@@ -17,14 +17,14 @@ namespace MintPlayer.Data.Repositories
 		private MintPlayerContext mintplayer_context;
 		private UserManager<Entities.User> user_manager;
 		private SongHelper song_helper;
-		private Nest.IElasticClient elastic_client;
-		public SongRepository(IHttpContextAccessor http_context, MintPlayerContext mintplayer_context, UserManager<Entities.User> user_manager, SongHelper song_helper, Nest.IElasticClient elastic_client)
+		private Jobs.Interfaces.IElasticSearchJobRepository elasticSearchJobRepository;
+		public SongRepository(IHttpContextAccessor http_context, MintPlayerContext mintplayer_context, UserManager<Entities.User> user_manager, SongHelper song_helper, Jobs.Interfaces.IElasticSearchJobRepository elasticSearchJobRepository)
 		{
 			this.http_context = http_context;
 			this.mintplayer_context = mintplayer_context;
 			this.user_manager = user_manager;
 			this.song_helper = song_helper;
-			this.elastic_client = elastic_client;
+			this.elasticSearchJobRepository = elasticSearchJobRepository;
 		}
 
 		public IEnumerable<Dtos.Song> GetSongs(bool include_relations = false)
@@ -83,11 +83,17 @@ namespace MintPlayer.Data.Repositories
 
 			// Add to database
 			mintplayer_context.Songs.Add(entity_song);
-			mintplayer_context.SaveChanges();
+			await mintplayer_context.SaveChangesAsync();
 
 			// Index
 			var new_song = ToDto(entity_song);
-			var index_status = await elastic_client.IndexDocumentAsync(new_song);
+			//var index_status = await elastic_client.IndexDocumentAsync(new_song);
+			var job = await elasticSearchJobRepository.InsertElasticSearchIndexJob(new Dtos.Jobs.ElasticSearchIndexJob
+			{
+				Subject = new_song,
+				SubjectStatus = Enums.eSubjectAction.Added,
+				JobStatus = Enums.eJobStatus.Queued
+			});
 
 			return new_song;
 		}
@@ -139,7 +145,13 @@ namespace MintPlayer.Data.Repositories
 
 			// Index
 			var updated_song = ToDto(song_entity);
-			await elastic_client.UpdateAsync<Song>(updated_song, u => u.Doc(updated_song));
+			//await elastic_client.UpdateAsync<Song>(updated_song, u => u.Doc(updated_song));
+			var job = await elasticSearchJobRepository.InsertElasticSearchIndexJob(new Dtos.Jobs.ElasticSearchIndexJob
+			{
+				Subject = updated_song,
+				SubjectStatus = Enums.eSubjectAction.Updated,
+				JobStatus = Enums.eJobStatus.Queued
+			});
 
 			return updated_song;
 		}
@@ -155,8 +167,14 @@ namespace MintPlayer.Data.Repositories
 			song.DeletedAt = DateTime.Now;
 
 			// Index
-			var song_dto = ToDto(song);
-			await elastic_client.DeleteAsync<Song>(song_dto);
+			var deleted_song = ToDto(song);
+			//await elastic_client.DeleteAsync<Song>(deleted_song);
+			var job = await elasticSearchJobRepository.InsertElasticSearchIndexJob(new Dtos.Jobs.ElasticSearchIndexJob
+			{
+				Subject = deleted_song,
+				SubjectStatus = Enums.eSubjectAction.Deleted,
+				JobStatus = Enums.eJobStatus.Queued
+			});
 		}
 
 		public async Task SaveChangesAsync()

@@ -80,6 +80,7 @@ namespace MintPlayer.Data.Extensions
 				.AddScoped<ISubjectRepository, SubjectRepository>()
 				.AddScoped<IMediumTypeRepository, MediumTypeRepository>()
 				.AddScoped<IMediumRepository, MediumRepository>()
+				.AddScoped<Repositories.Jobs.Interfaces.IElasticSearchJobRepository, Repositories.Jobs.ElasticSearchJobRepository>()
 				.AddTransient<ArtistHelper>()
 				.AddTransient<SongHelper>();
 

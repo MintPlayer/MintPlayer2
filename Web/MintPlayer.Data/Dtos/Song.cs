@@ -14,7 +14,7 @@ namespace MintPlayer.Data.Dtos
         public DateTime Released { get; set; }
         public string Lyrics { get; set; }
 
-		public string Text => Title;
+		public override string Text => Title;
 		public string YoutubeId
 		{
 			get

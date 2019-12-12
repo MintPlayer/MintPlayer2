@@ -10,10 +10,11 @@ import { SongModule } from './song/song.module';
 import { MediumTypeModule } from './medium-type/medium-type.module';
 import { SearchComponent } from './search/search.component';
 import { ControlsModule } from '../controls/controls.module';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 
 @NgModule({
-  declarations: [HomeComponent, SearchComponent],
+  declarations: [HomeComponent, SearchComponent, NotFoundComponent],
   imports: [
     CommonModule,
     ControlsModule,

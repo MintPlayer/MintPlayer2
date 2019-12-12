@@ -15,13 +15,13 @@ namespace MintPlayer.Data.Repositories
 		private IHttpContextAccessor http_context;
 		private MintPlayerContext mintplayer_context;
 		private UserManager<Entities.User> user_manager;
-		private Nest.IElasticClient elastic_client;
-		public PersonRepository(IHttpContextAccessor http_context, MintPlayerContext mintplayer_context, UserManager<Entities.User> user_manager, Nest.IElasticClient elastic_client)
+		private Jobs.Interfaces.IElasticSearchJobRepository elasticSearchJobRepository;
+		public PersonRepository(IHttpContextAccessor http_context, MintPlayerContext mintplayer_context, UserManager<Entities.User> user_manager, Jobs.Interfaces.IElasticSearchJobRepository elasticSearchJobRepository)
 		{
 			this.http_context = http_context;
 			this.mintplayer_context = mintplayer_context;
 			this.user_manager = user_manager;
-			this.elastic_client = elastic_client;
+			this.elasticSearchJobRepository = elasticSearchJobRepository;
 		}
 
 		public IEnumerable<Person> GetPeople(bool include_relations = false)
@@ -80,7 +80,13 @@ namespace MintPlayer.Data.Repositories
 
 			// Index
 			var new_person = ToDto(entity_person);
-			var index_status = await elastic_client.IndexDocumentAsync(new_person);
+			//var index_status = await elastic_client.IndexDocumentAsync(new_person);
+			var job = await elasticSearchJobRepository.InsertElasticSearchIndexJob(new Dtos.Jobs.ElasticSearchIndexJob
+			{
+				Subject = new_person,
+				SubjectStatus = Enums.eSubjectAction.Added,
+				JobStatus = Enums.eJobStatus.Queued
+			});
 
 			return new_person;
 		}
@@ -106,7 +112,13 @@ namespace MintPlayer.Data.Repositories
 
 			// Index
 			var updated_person = ToDto(entity_person);
-			await elastic_client.UpdateAsync<Person>(updated_person, u => u.Doc(updated_person));
+			//await elastic_client.UpdateAsync<Person>(updated_person, u => u.Doc(updated_person));
+			var job = await elasticSearchJobRepository.InsertElasticSearchIndexJob(new Dtos.Jobs.ElasticSearchIndexJob
+			{
+				Subject = updated_person,
+				SubjectStatus = Enums.eSubjectAction.Updated,
+				JobStatus = Enums.eJobStatus.Queued
+			});
 
 			return updated_person;
 		}
@@ -123,7 +135,13 @@ namespace MintPlayer.Data.Repositories
 
 			// Index
 			var deleted_person = ToDto(person);
-			await elastic_client.DeleteAsync<Person>(deleted_person);
+			//await elastic_client.DeleteAsync<Person>(deleted_person);
+			var job = await elasticSearchJobRepository.InsertElasticSearchIndexJob(new Dtos.Jobs.ElasticSearchIndexJob
+			{
+				Subject = deleted_person,
+				SubjectStatus = Enums.eSubjectAction.Deleted,
+				JobStatus = Enums.eJobStatus.Queued
+			});
 		}
 
 		public async Task SaveChangesAsync()

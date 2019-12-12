@@ -42,6 +42,7 @@ namespace MintPlayer.Web.Controllers.Api
 		{
 			var song = await songRepository.InsertSong(songCreateVM.Song);
 			await mediumRepository.StoreMedia(songCreateVM.Song, songCreateVM.Song.Media);
+			await songRepository.SaveChangesAsync();
 			return song;
 		}
 		// PUT: api/Song/5

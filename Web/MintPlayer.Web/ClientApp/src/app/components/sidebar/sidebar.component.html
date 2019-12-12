@@ -112,7 +112,7 @@
             </a>
           </li>
           <li *ngIf="activeUser !== null">
-            <a [routerLink]='["/profile"]' title="Profile" (click)="onItemSelected()">
+            <a [routerLink]='["/account","profile"]' title="Profile" (click)="onItemSelected()">
               <i class="fa fa-user-o"></i>
               Profile
             </a>

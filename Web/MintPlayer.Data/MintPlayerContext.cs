@@ -14,6 +14,8 @@ namespace MintPlayer.Data
 		internal DbSet<Like> Likes { get; set; }
 		internal DbSet<MediumType> MediumTypes { get; set; }
 		internal DbSet<Medium> Media { get; set; }
+		internal DbSet<Entities.Jobs.Job> Jobs { get; set; }
+		internal DbSet<Entities.Jobs.ElasticSearchIndexJob> ElasticSearchIndexJobs { get; set; }
 
 		public MintPlayerContext() : base()
 		{
@@ -33,6 +35,7 @@ namespace MintPlayer.Data
 		{
 			base.OnModelCreating(modelBuilder);
 
+			// Subjects
 			modelBuilder.Entity<Subject>().ToTable("Subjects");
 
 			// Many-to-many Artist-Person
@@ -65,6 +68,14 @@ namespace MintPlayer.Data
 
 			// Medium types
 			modelBuilder.Entity<MediumType>().HasQueryFilter(mt => mt.UserDelete == null);
+
+			// Jobs
+			modelBuilder.Entity<Entities.Jobs.Job>().ToTable("Jobs");
+
+			// Discriminator Job
+			modelBuilder.Entity<Entities.Jobs.Job>().Property(j => j.Id).ValueGeneratedOnAdd();
+			modelBuilder.Entity<Entities.Jobs.Job>().HasDiscriminator<string>("JobType")
+				.HasValue<Entities.Jobs.ElasticSearchIndexJob>("elasticsearch");
 		}
 	}
 }

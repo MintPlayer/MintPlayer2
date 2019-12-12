@@ -44,6 +44,7 @@ namespace MintPlayer.Web.Controllers.Api
 		{
 			var person = await personRepository.InsertPerson(personCreateVM.Person);
 			await mediumRepository.StoreMedia(personCreateVM.Person, personCreateVM.Person.Media);
+			await personRepository.SaveChangesAsync();
 			return person;
 		}
 
