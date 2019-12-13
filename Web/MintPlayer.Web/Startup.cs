@@ -91,7 +91,7 @@ namespace MintPlayer.Web
                 configuration.RootPath = "ClientApp/dist";
             });
 
-            services.AddOpenSearch<Services.OpenSearchService>();
+            //services.AddOpenSearch<Services.OpenSearchService>();
             
             services.AddSpaRoutes(routes => routes
                 .Route("", "home")

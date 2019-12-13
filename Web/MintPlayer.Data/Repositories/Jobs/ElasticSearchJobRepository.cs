@@ -1,6 +1,8 @@
-﻿using MintPlayer.Data.Dtos.Jobs;
-using MintPlayer.Data.Repositories.Jobs.Interfaces;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using MintPlayer.Data.Dtos.Jobs;
+using MintPlayer.Data.Repositories.Jobs.Interfaces;
 
 namespace MintPlayer.Data.Repositories.Jobs
 {
@@ -23,6 +25,33 @@ namespace MintPlayer.Data.Repositories.Jobs
 
             var new_job = ToDto(entity_job);
             return new_job;
+        }
+
+        public async Task<ElasticSearchIndexJob> UpdateElasticSearchIndexJob(ElasticSearchIndexJob job)
+        {
+            // Get entity from database
+            var entity_job = await mintplayer_context.ElasticSearchIndexJobs.FindAsync(job.Id);
+
+            // Set properties
+            entity_job.Status = job.JobStatus;
+
+            // Update
+            mintplayer_context.ElasticSearchIndexJobs.Update(entity_job);
+
+            return ToDto(entity_job);
+        }
+
+        public async Task<ElasticSearchIndexJob> PopElasticSearchIndexJob()
+        {
+            var entity_job = mintplayer_context.ElasticSearchIndexJobs
+                .Include(j => j.Subject)
+                .FirstOrDefault(j => j.Status == Enums.eJobStatus.Queued);
+            return ToDto(entity_job);
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await mintplayer_context.SaveChangesAsync();
         }
 
         #region Conversion methods
