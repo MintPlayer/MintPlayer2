@@ -1,4 +1,5 @@
 ﻿using AspNetCoreOpenSearch;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,15 @@ namespace MintPlayer.Web.Services
 {
     public class OpenSearchService : IOpenSearchService
     {
-        public IEnumerable<string> ProvideSuggestions(string searchTerm)
+        public async Task<RedirectResult> PerformSearch(string searchTerms)
         {
-            return new string[]
-            {
-                searchTerm,
-                new string(searchTerm.Reverse().ToArray())
+            return new RedirectResult($"/{searchTerms}");
+        }
+
+        public async Task<IEnumerable<string>> ProvideSuggestions(string searchTerms)
+        {
+            return new[] {
+                new string(searchTerms.Reverse().ToArray())
             };
         }
     }

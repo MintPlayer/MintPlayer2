@@ -17,18 +17,14 @@
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
-    <PackageReference Include="MintPlayer.AspNetCore.OpenSearch" Version="1.0.0" />
+    <PackageReference Include="MintPlayer.AspNetCore.OpenSearch" Version="1.0.4" />
     <PackageReference Include="MintPlayer.AspNetCore.SpaServices.Routing" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
-    <Compile Remove="Services\**" />
     <Content Remove="$(SpaRoot)**" />
-    <Content Remove="Services\**" />
-    <EmbeddedResource Remove="Services\**" />
     <None Remove="$(SpaRoot)**" />
-    <None Remove="Services\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
