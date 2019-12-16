@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { eToggleButtonState } from './enums/eToggleButtonState';
 import { eSidebarState } from './enums/eSidebarState';
 import { User } from './interfaces/account/user';
@@ -23,7 +23,7 @@ export class AppComponent {
   sidebarState: eSidebarState = eSidebarState.auto;
   playlistToggleButtonState: eToggleButtonState = eToggleButtonState.closed;
 
-  constructor(private accountService: AccountService, private youtubeHelper: YoutubeHelper) {
+  constructor(private accountService: AccountService, private youtubeHelper: YoutubeHelper, private ref: ChangeDetectorRef) {
     this.accountService.currentUser().then((user) => {
       this.activeUser = user;
     }).catch((error) => {
@@ -68,7 +68,7 @@ export class AppComponent {
 
   //#region Playlist
   playlist: Song[] = [];
-  currentsong: Song = null;
+  currentsong: Song;
   endOfPlaylist: boolean = true;
   addToPlaylist = (song: Song) => {
     this.playlist.push(song);
@@ -94,9 +94,8 @@ export class AppComponent {
       this.playSong(song);
     } else {
       this.endOfPlaylist = true;
-      setTimeout(() => {
-        this.currentsong = null;
-      }, 5);
+      this.currentsong = null;
+      this.ref.detectChanges();
     }
   }
   //#endregion

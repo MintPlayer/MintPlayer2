@@ -50,24 +50,24 @@ namespace MintPlayer.Data.Extensions
 						ValidateLifetime = true
 					};
 					jwt_options.SaveToken = false;
+				})
+				.AddFacebook(fb_options => {
+					fb_options.AppId = opt.FacebookOptions.AppId;
+					fb_options.AppSecret = opt.FacebookOptions.AppSecret;
+				})
+				.AddMicrosoftAccount(ms_options => {
+					ms_options.ClientId = opt.MicrosoftOptions.ClientId;
+					ms_options.ClientSecret = opt.MicrosoftOptions.ClientSecret;
+				})
+				.AddGoogle(g_options => {
+					g_options.ClientId = opt.GoogleOptions.ClientId;
+					g_options.ClientSecret = opt.GoogleOptions.ClientSecret;
+				})
+				.AddTwitter(tw_options => {
+					tw_options.ConsumerKey = opt.TwitterOptions.ConsumerKey;
+					tw_options.ConsumerSecret = opt.TwitterOptions.ConsumerSecret;
+					tw_options.RetrieveUserDetails = true;
 				});
-				//.AddFacebook(fb_options => {
-				//	fb_options.AppId = opt.FacebookOptions.AppId;
-				//	fb_options.AppSecret = opt.FacebookOptions.AppSecret;
-				//})
-				//.AddMicrosoftAccount(ms_options => {
-				//	ms_options.ClientId = opt.MicrosoftOptions.ClientId;
-				//	ms_options.ClientSecret = opt.MicrosoftOptions.ClientSecret;
-				//})
-				//.AddGoogle(g_options => {
-				//	g_options.ClientId = opt.GoogleOptions.ClientId;
-				//	g_options.ClientSecret = opt.GoogleOptions.ClientSecret;
-				//})
-				//.AddTwitter(tw_options => {
-				//	tw_options.ConsumerKey = opt.TwitterOptions.ConsumerKey;
-				//	tw_options.ConsumerSecret = opt.TwitterOptions.ConsumerSecret;
-				//	tw_options.RetrieveUserDetails = true;
-				//});
 
 			services.AddDataProtection();
 

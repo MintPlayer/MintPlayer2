@@ -14,7 +14,7 @@ export class IsLoggedInGuard implements CanActivate {
     return this.accountService.currentUser().then((user) => {
       return true;
     }).catch((error: HttpErrorResponse) => {
-      this.router.navigate(['/login'], {
+      this.router.navigate(['/account','login'], {
         queryParams: {
           return: state.url
         }
